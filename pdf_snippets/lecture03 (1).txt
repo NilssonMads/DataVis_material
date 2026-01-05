@@ -1,0 +1,211 @@
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+BASIC CHARTS HANS-JÖRG SCHULZ
+AU
+BASIC CHART TYPES
+Hans-Jörg SchulzBASIC CHARTS HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+1. INTRODUCTION 3. BASIC CHART TYPES
+Basics
+      Visualization
+Building Blocks
+& Processes
+     Visualization
+Techniques
+Visualization
+Applications
+2. VISUAL ENCODING
+4. INTERACTION
+6. DATA PREPROCESSING
+5. VISUALIZATION DESIGN
+7. RECAP 1st Half
+8. MULTIVARIATE DATAVIS
+10. GEOSPATIAL DATAVIS
+9. TEMPORAL DATAVIS
+11. GRAPH DATAVIS
+12. 3D DATAVIS 13. VISUAL ANALYTICS
+14. RECAP 2nd HalfBASIC CHARTS HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+WHY TALK ABOUT BASIC CHARTS?
+Charting Wizard MS Excel Charting Wizard Libre CalcBASIC CHARTS HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+BASIC CHARTS AS BUILDING BLOCKS
+BASIC CHARTS HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+OVERVIEW
+• Scatterplots incl. Binned Scatterplots, Splatterplots, Connected Scatterplots
+• Line Charts, Stepped Line Charts
+• Area Charts and Stacked Area Charts
+• Bar / Column Charts incl. Stacked Bar Charts, Grouped Bar Charts, Histograms
+• Radial Variants incl. Radar Chart, CoxcombDEPARTMENT OF COMPUTER SCIENCE
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+BASIC CHARTS HANS-JÖRG SCHULZAARHUS
+UNIVERSITY
+AU
+THE SCATTERPLOT
+BASIC CHARTS HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+THE SCATTERPLOT
+BASIC CHARTS HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+THE SCATTERPLOT
+​Considerations:
+• Does it make sense?
+BASIC CHARTS HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+THE SCATTERPLOT
+​Considerations:
+• Does it make sense?
+• How to scale it?
+BASIC CHARTS HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+BASIC CHARTS HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+THE SCATTERPLOT
+​Considerations:
+• Does it make sense?
+• How to scale it?
+• Which aspect ratio to use?
+Image source:
+doi:10.1109/TVCG.2013.187
+BASIC CHARTS HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+THE SCATTERPLOT
+​Considerations:
+• Does it make sense?
+• How to scale it?
+• Which aspect ratio to use?
+• How to place the tick marks on the axes?
+BASIC CHARTS HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+THE SCATTERPLOT
+​Considerations:
+• Does it make sense?
+• How to scale it?
+• Which aspect ratio to use?
+• How to place the tick marks on the axes?
+• Should I add grid lines in the background?
+BASIC CHARTS HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+THE SCATTERPLOT
+​Considerations:
+• Does it make sense?
+• How to scale it?
+• Which aspect ratio to use?
+• How to place the tick marks on the axes?
+• Should I add grid lines in the background?
+• Should I show quadrants / average lines?
+BASIC CHARTS HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+THE SCATTERPLOT
+​Considerations:
+• Does it make sense?
+• How to scale it?
+• Which aspect ratio to use?
+• How to place the tick marks on the axes?
+• Should I add grid lines in the background?
+• Should I show quadrants / average lines?
+• Should I add a trend line?
+BASIC CHARTS HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+THE SCATTERPLOT
+​Considerations:
+• Does it make sense?
+• How to scale it?
+• Which aspect ratio to use?
+• How to place the tick marks on the axes?
+• Should I add grid lines in the background?
+• Should I show quadrants / average lines?
+• Should I add a trend line?
+• What shape and size should the dots have?
+BASIC CHARTS HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+THE SCATTERPLOT
+​Considerations:
+• Does it make sense?
+• How to scale it?
+• Which aspect ratio to use?
+• How to place the tick marks on the axes?
+• Should I add grid lines in the background?
+• Should I show quadrants / average lines?
+• Should I add a trend line?
+• What shape and size should the dots have?
+• What if the plot is heavily overplotted?
+-> Transparency and Jittering
+BASIC CHARTS HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+ADD TRANSPARENCY
+BASIC CHARTS HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+THE PROBLEM WITH TRANSPARENCY
+BASIC CHARTS HANS-JÖRG SCHULZ
+DA

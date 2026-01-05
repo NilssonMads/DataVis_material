@@ -1,0 +1,112 @@
+Visualization Technique Lexicon 2025 
+1D 
+1D Quantitative: 
+Just a set of numbers, e.g. all ages in the room 
+• Histogram 
+• Violin 
+• Boxplot, Box and whiskers plot 
+• Bee swarm plot 
+ 
+ 
+1D Qualitative: 
+All we have are categorical values e.g. haircolors 
+• Piechart 
+• Waffle chart (works as long as not too many data points) 
+• Barchart 
+• Radarchart (works as long as not too many categories) 
+• Treemap (scale areas of tree maps according to time) 
+1D Temporal:  
+All we have is a series of time steps (i.e. no related quantity).  
+• Histogram (if data not too sparse) 
+• Instance chart (time on one axis and then data plotted as instances) 
+o Can be transformed into 1D heatmap 
+• Time map (plotting time from previous event on x-axis, time to next event on y-axis. 
+Data must be from same source) 
+o Example: scatter plot (like the twitter plot where we saw bot pattern) 
+ 
+1D Spatial: 
+E.g. a column of positions (long, lat) 
+• Dotmap 
+o equivalence of scatterplot on geospatial data (ex: crime map plot) 
+• Heatmap 
+• Binned Dotmap (brings out differences in distributions) 
+2D 
+2D Quantitative, Quantitative: 
+Pairs of numbers 
+• Scatterplot (alternatively binned scatterplot if you have too many data points) 
+ 
+• Bubble chart 
+• Heat map 
+• Marimekko chart (turn quantitative features into qualitative by binning, kind of like a 
+2d histogram but drawing space is divided) 
+o Mosaic plot is Marimekko chart with qualities. Marimekko is for quantities 
+only. 
+• Parallel sets (if values are binned) 
+2D Quantitative, Qualitative: 
+Pairs of categorical values and numerical values 
+- Mix of mosaic and marimekko chart (not either since those are only for qual., 
+quant., respectively) 
+- Parallel sets (with quantitative binned) 
+Note: We cannot use a bar chart since we’d need a one-to-one function mapping.  
+2D Qualitative, Qualitative: 
+• Mosaic plot 
+ 
+• Parallel sets (mapping onto area)  
+ 
+• Matrix display (mapping onto color) 
+2D quantitative, temporal:  
+One quantity for each timestamp. 
+• Line chart (assuming we don’t have multiple values for same timepoint (one-to-
+one)) 
+• Area chart 
+2D qualitative, temporal: 
+Some quality for each timestamp. 
+• Stacked bar chart (discrete – like time on Mondays-) 
+• Stacked area chart (continuous temporal resolution) 
+2D Quantitative, Spatial (area): 
+• Choropleth map (when measurement is given for area (e.g. country)) 
+• Cartogram 
+2D Quantitative, Spatial (point): 
+• Isopleth map  
+• Bubble map 
+2D Qualitative, Spatial (area): 
+• Choropleth map 
+2D Qualitative, Spatial (point): 
+• Chorochromatic map (equivalent to isopleth map) 
+2D Spatial, temporal 
+• Space-Time cube (dimension as 3rd dimension) 
+• Small Multiples  
+o e.g. grid of timestamped choropleth maps 
+o “Poor man’s Trellis Plot” - Hans-Jörg 🙂‍ ↕️  
+• Animation (mapping time onto display time) 
+2D Spatial, Spatial 
+• Flow map (alternatively, origin-destination map) 
+2D Temporal, Temporal: 
+Pairs of time data points/values 
+• Triangular model 
+• Gantt chart 
+ 
+ 
+3D 
+ 3D Quantitative, Quantitative, Quantitative 
+• Bubble chart  
+• Ternary plot (condition = add up to 1) 
+• Parallel coordinates 
+• Scatterplot matrix  
+• Radar chart (condition = not too many datapoints) 
+• Radviz/Radviz++/Radviz deluxe 
+• Marimekko chart (mosaic chart for quantitative variables) 
+3D Quantitative, Quantitative, Qualitative 
+... 
+3D Quant, Quant, Temp: 
+• Connected scatterplot 
+3D Spatial, Spatial, Temporal:  
+• Small Multiples with Flowmaps 
+ 
+5D Qualitative, Qualitative, Qualitative, Qualitative, Qualitative: 
+•  
+5D Quantitative, Quantitative, Quantitative, Quantitative, Quantitative: 
+• Scatterplot matrix 
+• Parallel coordinates 
+ 
+  The bird flu? Yeah, they tend to do that. 

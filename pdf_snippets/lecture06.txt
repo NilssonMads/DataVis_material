@@ -1,0 +1,151 @@
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DATA PREPROCESSING HANS-JÖRG SCHULZ
+AU
+DATA PREPROCESSING
+PLEASE SIT IN YOUR PROJECT GROUPS.DATA PREPROCESSING HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+1. INTRODUCTION 3. BASIC CHART TYPES
+Basics
+      Visualization
+Building Blocks
+& Processes
+     Visualization
+Techniques
+Visualization
+Applications
+2. VISUAL ENCODING
+4. INTERACTION
+6. DATA PREPROCESSING
+5. VISUALIZATION DESIGN
+7. RECAP 1st Half
+8. MULTIVARIATE DATAVIS
+10. GEOSPATIAL DATAVIS
+9. TEMPORAL DATAVIS
+11. GRAPH DATAVIS
+12. 3D DATAVIS 13. VISUAL ANALYTICS
+14. RECAP 2nd HalfDATA PREPROCESSING HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+WHY TALK ABOUT PREPROCESSING? 1/3
+Issue 1: Data Characteristics are Unknown
+Image Source: [Schulz et al. 2017]DATA PREPROCESSING HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+WHY TALK ABOUT PREPROCESSING? 2/3
+​Source: The Quartz Guide to Bad Data
+Issue 2: Poor Data QualityDATA PREPROCESSING HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+WHY TALK ABOUT PREPROCESSING? 3/3
+Issue 3: Too many data
+Crimes in Philadephia (2006-2013): Full dataset on the left (700k data points),
+       Sample on the right (5,3k data points)
+Image Source: [Zheng et al. 2021]DATA PREPROCESSING HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+OVERVIEW
+​1. Data Profiling, e.g. -
+• Determine access modalities
+• Establish / validate data characteristics
+​2. Data Wrangling, e.g. -
+• Check data for correctness and fix data where possible
+• Fuse data from multiple sources
+​3. Data Transformation / Reduction, e.g. -
+• Sampling data
+• Aggregating data
+3 Stages of Data Preprocessing
+Adapted from [Kandel et al. 2011]DEPARTMENT OF COMPUTER SCIENCE
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DATA PREPROCESSING HANS-JÖRG SCHULZAARHUS
+UNIVERSITY
+AU
+DATA PROFILINGDATA PREPROCESSING HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+DATA PROFILING
+​Data profiling := the process of diagnosing a new or otherwise unknown dataset for its
+access modalities and data space characteristics
+​Access modalities: how often, how much, how detailed data can be retrieved (GDPR!)
+• Different character encodings (ASCII vs. UTF-8 vs. ISO-8859 …)
+• Different number formats (10,000.00 vs. 10000,00 vs. 1E+4 …)
+• Different date formats (09-NOV-2011 vs. 09.11.2011 vs. 11/09/11…)
+• Different time formats (16.20 vs. 4.20pm vs. 04:20:00 …)
+• Different time zones / standards (UTC vs. GMT vs. EPOCH …)
+• Different coordinate formats (DMS vs. Decimal DMS vs. UTM …)DATA PREPROCESSING HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+DATA SPACE CHARACTERISTICS
+​Determine what are you looking at and whether it is plausible
+• incl. data formatting (e.g., IP addresses, lat/lon coordinates, license plates, CPR#,…)
+• value ranges (e.g., lat: -90°…+90°, lon: -180°…+180°)
+• units (e.g., Celsius (-273.15°C…), Fahrenheit (-459.67°F…) or Kelvin (0K…))
+• placeholders (e.g., std::numeric_limits<float>::max() )
+• consistency (e.g., noisy sensor but whole data values, time running backwards)
+• topology of data structure (e.g., if tree structure, check  #edges +1 = #nodes)
+• distribution of numbers (Benford’s law), words (Zipf’s law)DATA PREPROCESSING HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+Zipf’s Law (Darwin’s Origin of Species)Benford’s LawDATA PREPROCESSING HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+https://youtu.be/etx0k1nLn78
+DATA PREPROCESSING HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+MAKE USE OF KNOWN VALUE RANGES!
+​Sensible value ranges as simple guards against “bad” data:
+e.g., Temperature
+• Body Temperature: 10°C … 50°C
+min record that was survived: 14.2°C
+max record that was survived: 46.5°C
+• Room Temperature: 0°C … 60°C
+• Surface Temperature: -100°C … +100°
+min record: Vostok Station in Antarctica with -89.2°C on July 21, 1983
+max record: Death Valley in California with +56.7°C on July 10, 1913
+         -> surface temperature: Lut Desert in Iran with +70.7°C in 2004/2005
+• General Temperature: -273.15°C …DATA PREPROCESSING HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+THE PROBLEM(S) WITH “STANDARDS”
+• Competing Standards
+• Different versions of the same standard
+• Flexibility in interpreting the standard
+• Incomplete implementations of the standard
+• Standardized data still requires validation
+• Not all required information may be part of the standar

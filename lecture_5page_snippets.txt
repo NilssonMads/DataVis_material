@@ -1,0 +1,1608 @@
+=== 08_lecture_cut.pdf pages=51
+DEPARTMENT OF COMPUTER SCIENCE
+DAVI FALL 2024 ASSOCIATE PROFESSOR
+MULTIVARIATE VIS HANS-JÖRG SCHULZAARHUS
+UNIVERSITY
+VISUALIZING
+MULTIVARIATE DATA
+DAVI FALL 2024
+MULTIVARIATE VIS HANS-JÖRG SCHULZ
+ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+1. INTRODUCTION 3. BASIC CHART TYPES
+Basics
+Visualization
+Building Blocks
+& Processes
+Visualization 
+Techniques
+Visualization
+in Practice
+2. VISUAL ENCODING
+4. INTERACTION
+6. DATA PREPROCESSING
+5. VISUALIZATION DESIGN
+7. RECAP 1st Half
+8. MUL TIV ARIA TE DA T A VIS 10. GEOSPATIAL DATAVIS9. TEMPORAL DATAVIS
+11. GRAPH DATAVIS 12. TEXT DATAVIS
+13. VISUAL ANALYTICS
+14. RECAP 2nd Half
+DAVI FALL 2024
+MULTIVARIATE VIS HANS-JÖRG SCHULZ
+ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+WHY TALK ABOUT MULTIVARIATE VIS?
+Mapping two attributes 
+(Position)
+Mapping three attributes
+(Position, Area)
+Mapping four Attributes 
+(Position, Area, Color)
+Mapping five Attributes 
+(Position, Area, Color, Shape)
+This does not scale!
+DAVI FALL 2024
+MULTIVARIATE VIS HANS-JÖRG SCHULZ
+ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+[OriginLab Documentation]
+https://www.originlab.com/www/products/GraphGallery.aspx?GID=416 
+DAVI FALL 2024
+MULTIVARIATE VIS HANS-JÖRG SCHULZ
+ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+OVERVIEW
+Using Points
+• Ternary Plots
+• Scatterplot Matrices (SPLOMs)
+• RadViz
+Using (Poly)Lines
+• Parallel Coordinates (PCs)
+• Parallel Sets
+• Radar Charts
+Using Nesting / Hierarchies
+• Mosaic Plots
+• Trellis Displays
+Others
+• Glyphs
+• Pixel-based Visualizations
+
+=== DataVis 2025 Chart Lexicon.pdf pages=6
+Visualization Technique Lexicon 2025 
+1D 
+1D Quantitative: 
+Just a set of numbers, e.g. all ages in the room 
+• Histogram 
+• Violin 
+• Boxplot, Box and whiskers plot 
+• Bee swarm plot 
+ 
+ 
+1D Qualitative: 
+All we have are categorical values e.g. haircolors 
+• Piechart 
+• Waffle chart (works as long as not too many data points) 
+• Barchart 
+• Radarchart (works as long as not too many categories) 
+• Treemap (scale areas of tree maps according to time) 
+1D Temporal:  
+All we have is a series of time steps (i.e. no related quantity).  
+• Histogram (if data not too sparse) 
+• Instance chart (time on one axis and then data plotted as instances) 
+o Can be transformed into 1D heatmap 
+• Time map (plotting time from previous event on x-axis, time to next event on y-axis. 
+Data must be from same source) 
+o Example: scatter plot (like the twitter plot where we saw bot pattern) 
+
+ 
+1D Spatial: 
+E.g. a column of positions (long, lat) 
+• Dotmap 
+o equivalence of scatterplot on geospatial data (ex: crime map plot) 
+• Heatmap 
+• Binned Dotmap (brings out differences in distributions) 
+2D 
+2D Quantitative, Quantitative: 
+Pairs of numbers 
+• Scatterplot (alternatively binned scatterplot if you have too many data points) 
+ 
+• Bubble chart 
+• Heat map 
+• Marimekko chart (turn quantitative features into qualitative by binning, kind of like a 
+2d histogram but drawing space is divided) 
+o Mosaic plot is Marimekko chart with qualities. Marimekko is for quantities 
+only. 
+• Parallel sets (if values are binned) 
+2D Quantitative, Qualitative: 
+Pairs of categorical values and numerical values 
+
+- Mix of mosaic and marimekko chart (not either since those are only for qual., 
+quant., respectively) 
+- Parallel sets (with quantitative binned) 
+Note: We cannot use a bar chart since we’d need a one-to-one function mapping.  
+2D Qualitative, Qualitative: 
+• Mosaic plot 
+ 
+• Parallel sets (mapping onto area)  
+ 
+• Matrix display (mapping onto color) 
+2D quantitative, temporal:  
+One quantity for each timestamp. 
+• Line chart (assuming we don’t have multiple values for same timepoint (one-to-
+one)) 
+• Area chart 
+2D qualitative, temporal: 
+Some quality for each timestamp. 
+
+• Stacked bar chart (discrete – like time on Mondays-) 
+• Stacked area chart (continuous temporal resolution) 
+2D Quantitative, Spatial (area): 
+• Choropleth map (when measurement is given for area (e.g. country)) 
+• Cartogram 
+2D Quantitative, Spatial (point): 
+• Isopleth map  
+• Bubble map 
+2D Qualitative, Spatial (area): 
+• Choropleth map 
+2D Qualitative, Spatial (point): 
+• Chorochromatic map (equivalent to isopleth map) 
+2D Spatial, temporal 
+• Space-Time cube (dimension as 3rd dimension) 
+• Small Multiples  
+o e.g. grid of timestamped choropleth maps 
+o “Poor man’s Trellis Plot” - Hans-Jörg 🙂‍ ↕️  
+• Animation (mapping time onto display time) 
+2D Spatial, Spatial 
+• Flow map (alternatively, origin-destination map) 
+2D Temporal, Temporal: 
+Pairs of time data points/values 
+• Triangular model 
+• Gantt chart 
+ 
+ 
+3D 
+ 
+3D Quantitative, Quantitative, Quantitative 
+• Bubble chart  
+• Ternary plot (condition = add up to 1) 
+• Parallel coordinates 
+• Scatterplot matrix  
+• Radar chart (condition = not too many datapoints) 
+• Radviz/Radviz++/Radviz deluxe 
+• Marimekko chart (mosaic chart for quantitative variables) 
+3D Quantitative, Quantitative, Qualitative 
+... 
+3D Quant, Quant, Temp: 
+• Connected scatterplot 
+3D Spatial, Spatial, Temporal:  
+• Small Multiples with Flowmaps 
+ 
+5D Qualitative, Qualitative, Qualitative, Qualitative, Qualitative: 
+•  
+5D Quantitative, Quantitative, Quantitative, Quantitative, Quantitative: 
+• Scatterplot matrix 
+• Parallel coordinates 
+ 
+  
+
+=== lecture01.pdf pages=119
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY DATAVIS 2025 ASSOCIATE PROFESSOR
+INTRODUCTION HANS-JÖRG SCHULZ
+AU
+INTRODUCTION TO
+DATA VISUALIZATION
+Hans-Jörg Schulz
+INTRODUCTION HANS-JÖRG SCHULZ
+DATAVIS 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+ABOUT YOUR LECTURER
+​Hans-Jörg Schulz
+​eMail: hjschulz@cs.au.dk
+​Assoc. Professor @ CS Department, HCC Section
+​46 yrs., married, 6yo. daughter + 2wo. son
+​>20 years of experience in visualization gathered at
+University of Rostock, Germany
+TU Graz, Austria
+University of Calgary, Canada
+Fraunhofer IGD, Germany
+INTRODUCTION HANS-JÖRG SCHULZ
+DATAVIS 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+ https://vis-au.github.io/stackedcharts/
+INTRODUCTION HANS-JÖRG SCHULZ
+DATAVIS 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+ https://vis-au.github.io/scivis23/
+INTRODUCTION HANS-JÖRG SCHULZ
+DATAVIS 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+ https://vis-au.github.io/mapblender/
+
+=== lecture02 (1).pdf pages=101
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY FALL 2025 ASSOCIATE PROFESSOR
+DAVI - ENCODING HANS-JÖRG SCHULZ
+AU
+VISUAL ENCODING
+Please find a different seat from last week!
+DAVI - ENCODING HANS-JÖRG SCHULZ
+FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+1. INTRODUCTION 3. BASIC CHART TYPES
+Basics
+      Visualization
+Building Blocks
+& Processes
+     Visualization
+Techniques
+Visualization
+Applications
+2. VISUAL ENCODING
+4. INTERACTION
+6. DATA PREPROCESSING
+5. VISUALIZATION DESIGN
+7. RECAP 1st Half
+8. MULTIVARIATE DATAVIS
+10. GEOSPATIAL DATAVIS
+9. TEMPORAL DATAVIS
+11. GRAPH DATAVIS
+12. 3D DATAVIS 13. VISUAL ANALYTICS
+14. RECAP 2nd Half
+DAVI - ENCODING HANS-JÖRG SCHULZ
+FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+WHY TALK ABOUT VISUAL MAPPING?
+• Need to parametrize a preset chart
+-> e.g., which color scale to use
+• Need to adjust a base chart
+-> e.g., to counter a perceptual bias
+• Need to build your own chart type
+-> e.g., to tailor it to a dataset
+• Need to detect when someone tries to
+deceive you with a chart
+-> Visual Literacy
+
+DAVI - ENCODING HANS-JÖRG SCHULZ
+FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+OVERVIEW
+• Marks & Channels
+• Dimensionality
+• Labeling
+• Rendering
+DEPARTMENT OF COMPUTER SCIENCE
+FALL 2025 ASSOCIATE PROFESSOR
+DAVI - ENCODING HANS-JÖRG SCHULZAARHUS
+UNIVERSITY
+AU
+MARKS & CHANNELS
+
+=== lecture03 (1).pdf pages=71
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+BASIC CHARTS HANS-JÖRG SCHULZ
+AU
+BASIC CHART TYPES
+Hans-Jörg Schulz
+BASIC CHARTS HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+1. INTRODUCTION 3. BASIC CHART TYPES
+Basics
+      Visualization
+Building Blocks
+& Processes
+     Visualization
+Techniques
+Visualization
+Applications
+2. VISUAL ENCODING
+4. INTERACTION
+6. DATA PREPROCESSING
+5. VISUALIZATION DESIGN
+7. RECAP 1st Half
+8. MULTIVARIATE DATAVIS
+10. GEOSPATIAL DATAVIS
+9. TEMPORAL DATAVIS
+11. GRAPH DATAVIS
+12. 3D DATAVIS 13. VISUAL ANALYTICS
+14. RECAP 2nd Half
+BASIC CHARTS HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+WHY TALK ABOUT BASIC CHARTS?
+Charting Wizard MS Excel Charting Wizard Libre Calc
+BASIC CHARTS HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+BASIC CHARTS AS BUILDING BLOCKS
+
+BASIC CHARTS HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+OVERVIEW
+• Scatterplots incl. Binned Scatterplots, Splatterplots, Connected Scatterplots
+• Line Charts, Stepped Line Charts
+• Area Charts and Stacked Area Charts
+• Bar / Column Charts incl. Stacked Bar Charts, Grouped Bar Charts, Histograms
+• Radial Variants incl. Radar Chart, Coxcomb
+
+=== lecture04.pdf pages=54
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+INTERACTION HANS-JÖRG SCHULZ
+AU
+INTERACTION FOR
+VISUALIZATION
+Hans-Jörg Schulz
+INTERACTION HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+1. INTRODUCTION 3. BASIC CHART TYPES
+Basics
+      Visualization
+Building Blocks
+& Processes
+     Visualization
+Techniques
+Visualization
+Applications
+2. VISUAL ENCODING
+4. INTERACTION
+6. DATA PREPROCESSING
+5. VISUALIZATION DESIGN
+7. RECAP 1st Half
+8. MULTIVARIATE DATAVIS
+10. GEOSPATIAL DATAVIS
+9. TEMPORAL DATAVIS
+11. GRAPH DATAVIS
+12. 3D DATAVIS 13. VISUAL ANALYTICS
+14. RECAP 2nd Half
+INTERACTION HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+WHY TALK ABOUT INTERACTION?
+• Possibility of adjusting the visualization
+-> from viewing to exploring
+• Possibility for issuing visual queries
+-> from typing to selecting or sketching
+• Possibility for enhancing the visualization
+-> from screenshot to annotated animation
+• Possibility to cater to diverse users & tasks
+-> from one-size-fits-all to tailored vis
+
+INTERACTION HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+OVERVIEW
+• Visual Information Seeking:
+• Overview & Detail   and   Zoom & Pan
+• Focus & Context   and   Interactive Lenses
+• Multiple Coordinated Views   and   Brushing & Linking
+• Tangible Interaction for Data Visualization
+DEPARTMENT OF COMPUTER SCIENCE
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+INTERACTION HANS-JÖRG SCHULZAARHUS
+UNIVERSITY
+AU
+VISUAL INFORMATION
+SEEKING –
+OVERVIEW & DETAIL
+
+=== lecture05.pdf pages=50
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+VISUALIZATION DESIGN HANS-JÖRG SCHULZ
+AU
+VISUALIZATION DESIGN
+Hans-Jörg Schulz
+VISUALIZATION DESIGN HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+1. INTRODUCTION 3. BASIC CHART TYPES
+Basics
+      Visualization
+Building Blocks
+& Processes
+     Visualization
+Techniques
+Visualization
+Applications
+2. VISUAL ENCODING
+4. INTERACTION
+6. DATA PREPROCESSING
+5. VISUALIZATION DESIGN
+7. RECAP 1st Half
+8. MULTIVARIATE DATAVIS
+10. GEOSPATIAL DATAVIS
+9. TEMPORAL DATAVIS
+11. GRAPH DATAVIS
+12. 3D DATAVIS 13. VISUAL ANALYTICS
+14. RECAP 2nd Half
+VISUALIZATION DESIGN HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+WHY TALK ABOUT VIS DESIGN?
+How to get from a visualization problem to a visualization solution?
+
+VISUALIZATION DESIGN HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+OVERVIEW
+• The Visualization Problem
+• Data Abstraction
+• Task Abstraction
+• Design Processes for Data Visualization
+• Design Activity Framework
+• 5 Design Sheet Methodology
+• Evaluating the Resulting Visualization Solution
+• Munzner’s Nested Model for Visualization Design
+DEPARTMENT OF COMPUTER SCIENCE
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+VISUALIZATION DESIGN HANS-JÖRG SCHULZAARHUS
+UNIVERSITY
+AU
+THE VISUALIZATION PROBLEM:
+DATA ABSTRACTION
+
+=== lecture06.pdf pages=46
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DATA PREPROCESSING HANS-JÖRG SCHULZ
+AU
+DATA PREPROCESSING
+PLEASE SIT IN YOUR PROJECT GROUPS.
+DATA PREPROCESSING HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+1. INTRODUCTION 3. BASIC CHART TYPES
+Basics
+      Visualization
+Building Blocks
+& Processes
+     Visualization
+Techniques
+Visualization
+Applications
+2. VISUAL ENCODING
+4. INTERACTION
+6. DATA PREPROCESSING
+5. VISUALIZATION DESIGN
+7. RECAP 1st Half
+8. MULTIVARIATE DATAVIS
+10. GEOSPATIAL DATAVIS
+9. TEMPORAL DATAVIS
+11. GRAPH DATAVIS
+12. 3D DATAVIS 13. VISUAL ANALYTICS
+14. RECAP 2nd Half
+DATA PREPROCESSING HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+WHY TALK ABOUT PREPROCESSING? 1/3
+Issue 1: Data Characteristics are Unknown
+Image Source: [Schulz et al. 2017]
+DATA PREPROCESSING HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+WHY TALK ABOUT PREPROCESSING? 2/3
+​Source: The Quartz Guide to Bad Data
+Issue 2: Poor Data Quality
+DATA PREPROCESSING HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+WHY TALK ABOUT PREPROCESSING? 3/3
+Issue 3: Too many data
+Crimes in Philadephia (2006-2013): Full dataset on the left (700k data points),
+       Sample on the right (5,3k data points)
+Image Source: [Zheng et al. 2021]
+
+=== lecture07.pdf pages=7
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+RECAP 1ST HALF HANS-JÖRG SCHULZ
+AU
+ROUND-UP OF 1ST HALF
+Hans-Jörg Schulz
+RECAP 1ST HALF HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+1. INTRODUCTION 3. BASIC CHART TYPES
+Basics
+      Visualization
+Building Blocks
+& Processes
+     Visualization
+Techniques
+Visualization
+Applications
+2. VISUAL ENCODING
+4. INTERACTION
+6. DATA PREPROCESSING
+5. VISUALIZATION DESIGN
+7. RECAP 1st Half
+8. MULTIVARIATE DATAVIS
+10. GEOSPATIAL DATAVIS
+9. TEMPORAL DATAVIS
+11. GRAPH DATAVIS
+12. 3D DATAVIS 13. VISUAL ANALYTICS
+14. RECAP 2nd Half
+RECAP 1ST HALF HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+NESTED MODEL
+ Domain: application field … usage scenario
+      => target users
+      => needs for visualization
+      => representational conventions
+Data / Task: what is to be shown to which end
+      => abstract data description
+      => abstract task description
+      => which task on which data -> workflow
+Visual encoding: how shall the data be shown
+      => visual entity budget / decluttering
+      => positioning / placement w.r.t. mental map
+      => labeling
+Algorithm: how to realize / implement that
+      => iterative / incremental
+      => optimal / heuristic
+      => fixed / parametrizable
+Image source: T.Munzner 2014
+https://doi.org/10.1109/TVCG.2009.111
+RECAP 1ST HALF HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+THE VISUALIZATION PIPELINE
+Interaction
+Perception
+[Haber, McNabb 1990] and [Card, Mackinley 1999]
+https://www.academia.edu/download/40903302/HaberMcNabb1990.pdf
+http://www.sci.utah.edu/vrc2005/McCormick-1987-VSC.pdf
+Image source: InfoVis Wiki
+RECAP 1ST HALF HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+V.WIJK’S VISUALIZATION MODEL
+D = data
+S = specification
+V = visualization
+I = image
+P = perception
+K = knowledge
+E = interactive exploration
+Image source: v.Wijk 2005
+https://doi.org/10.1109/VISUAL.2005.1532781
+
+=== lecture09.pdf pages=42
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY DATAVIS  FALL 2025 ASSOCIATE PROFESSOR
+TIME VISUALIZATION HANS-JÖRG SCHULZ
+AU
+VISUALIZATION OF
+TEMPORAL DATA
+Hans-Jörg Schulz
+RECAP 1st half HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+Department of Computer Science
+AARHUS
+UNIVERSITY
+AU
+1. INTRODUCTION 3. BASIC CHART TYPES
+Basics
+      Visualization
+Building Blocks
+& Processes
+     Visualization
+Techniques
+Visualization
+Applications
+2. VISUAL ENCODING
+4. INTERACTION
+6. DATA PREPROCESSING
+5. VISUALIZATION DESIGN
+7. RECAP 1st Half
+8. MULTIVARIATE DATAVIS
+10. GEOSPATIAL DATAVIS
+9. TEMPORAL DATAVIS
+11. GRAPH DATAVIS
+12. 3D DATAVIS 13. VISUAL ANALYTICS
+14. RECAP 2nd Half
+RECAP 1st half HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+Department of Computer Science
+AARHUS
+UNIVERSITY
+AU
+
+TIME VISUALIZATION HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+OVERVIEW
+​1. Principles of Time Vis
+• Data & Task Characterization
+• Principle Mapping Possibilities
+• Horizon Graphs
+​2. Visualizing Time Intervals
+• Triangular Model
+​3. Visualizing Event-based Data
+• Outflow
+• Time Maps
+4. Interaction Techniques
+• Stack Zooming
+• ChronoLenses
+DEPARTMENT OF COMPUTER SCIENCE
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+TIME VISUALIZATION HANS-JÖRG SCHULZAARHUS
+UNIVERSITY
+AU
+PRINCIPLES OF TIME VIS
+
+=== lecture10.pdf pages=51
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+GEOVIUALIZATIONS HANS-JÖRG SCHULZ
+AU
+GEOSPATIAL
+VISUALIZATION
+Hans-Jörg Schulz
+RECAP 1st half HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+Department of Computer Science
+AARHUS
+UNIVERSITY
+AU
+1. INTRODUCTION 3. BASIC CHART TYPES
+Basics
+      Visualization
+Building Blocks
+& Processes
+     Visualization
+Techniques
+Visualization
+Applications
+2. VISUAL ENCODING
+4. INTERACTION
+6. DATA PREPROCESSING
+5. VISUALIZATION DESIGN
+7. RECAP 1st Half
+8. MULTIVARIATE DATAVIS
+10. GEOSPATIAL DATAVIS
+9. TEMPORAL DATAVIS
+11. GRAPH DATAVIS
+12. 3D DATAVIS 13. VISUAL ANALYTICS
+14. RECAP 2nd Half
+GEOVISUALIZATION HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+WHY TALK ABOUT GEOVISUALIZATION?
+Geovis / Thematic Cartography is in many ways the foundations of data vis.
+
+GEOVISUALIZATION HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+
+GEOVISUALIZATION HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+ Image source: https://public.tableau.com/app/profile/ken.flerlage/viz/VisualizingthePresidentialElection/Title
+
+=== lecture11.pdf pages=53
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+GRAPH VISUALIZATION HANS-JÖRG SCHULZ
+AU
+GRAPH VISUALIZATION
+Hans-Jörg Schulz
+GRAPH VISUALIZATION HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+1. INTRODUCTION 3. BASIC CHART TYPES
+Basics
+      Visualization
+Building Blocks
+& Processes
+     Visualization
+Techniques
+Visualization
+Applications
+2. VISUAL ENCODING
+4. INTERACTION
+6. DATA PREPROCESSING
+5. VISUALIZATION DESIGN
+7. RECAP 1st Half
+8. MULTIVARIATE DATAVIS
+10. GEOSPATIAL DATAVIS
+9. TEMPORAL DATAVIS
+11. GRAPH DATAVIS
+12. 3D DATAVIS 13. VISUAL ANALYTICS
+14. RECAP 2nd Half
+GRAPH VISUALIZATION HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+WHY TALK ABOUT GRAPH VISUALIZATION?
+Graphs / networks put two data items into relation to each other.
+• Social networks
+• Computer networks
+• Call graphs of a software
+• Traffic networks
+• …
+If that relation is hierarchical, we also speak of a tree structure.
+GRAPH VISUALIZATION HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+DATA VALUES VS. DATA RELATION
+
+GRAPH VISUALIZATION HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+FUNDAMENTAL TERMS
+​Data item => Node
+​Data relation => Edge
+​# of Data items related to a given data item X => Degree of X
+​Numerical attributes of nodes and edges => Weights
+​Graph w/o cycles => Tree
+​Dedicated node of a tree => Root
+​Data item A (closer to the root) having an edge to B (further from the root)
+​       => A is the Parent, B is the Child
+Nodes having the same parent => Siblings
+Nodes having no children => Leaves
+​Average # of children in a tree => Branching factor
+
+=== lecture13.pdf pages=58
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+VISUAL ANALYTICS HANS-JÖRG SCHULZ
+AU
+VISUAL ANALYTICS
+Hans-Jörg Schulz
+VISUAL ANALYTICS HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+1. INTRODUCTION 3. BASIC CHART TYPES
+Basics
+      Visualization
+Building Blocks
+& Processes
+     Visualization
+Techniques
+Visualization
+Applications
+2. VISUAL ENCODING
+4. INTERACTION
+6. DATA PREPROCESSING
+5. VISUALIZATION DESIGN
+7. RECAP 1st Half
+8. MULTIVARIATE DATAVIS
+10. GEOSPATIAL DATAVIS
+9. TEMPORAL DATAVIS
+11. GRAPH DATAVIS
+12. 3D DATAVIS 13. VISUAL ANALYTICS
+14. RECAP 2nd Half
+VISUAL ANALYTICS HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+video source: https://youtu.be/5uGRGqCFryg
+
+VISUAL ANALYTICS HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+VISUAL ANALYTICS
+​“Visual analytics combines automated analysis techniques with interactive
+visualizations for an effective understanding, reasoning and decision
+making on the basis of very large and complex datasets.”
+​Keim et al. 2008
+[ https://doi.org/10.1007/978-3-540-70956-5_7 ]
+[ https://doi.org/10.2312/14803 ]
+
+VISUAL ANALYTICS HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+WHY TALK ABOUT VISUAL ANALYTICS?
+VA comes with a series of challenges in its own right:
+• Computational analysis is often a long-running, time consuming process,
+while visual data analysis is fast-paced and interactive.
+• Visualization must not only be expressive of the underlying data, but the
+underlying computational processes
+• The aim of VA is
+• ill-defined: “generate insight in the data”
+• subjective: “confirm the expected and discover the unexpected”
+• elusive / iterative: the moment you reach an analysis goal, it shifts…
+• constrained: results must be ready to base timely decisions on them
+
+=== VisualizationLecture3DViz.pdf pages=54
+Data Visualization Course: Guest Lecture Stefanie 
+Zollmann
+3D Visualisation Visualisation for 3D or 3D for Visualisation
+
+3D Visualisation - Why?
+3
+BAD!!!
+3D Visualisation - Why?
+4
+Still bad
+
+3D Visualisation Examples - Geographic Data
+5
+https://sandcastle.cesium.com/?id=cesium-world-terrain
+3D Visualisation Examples - Medical Datasets
+6
+
+=== lecture03 (1).pdf pages=71
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+BASIC CHARTS HANS-JÖRG SCHULZ
+AU
+BASIC CHART TYPES
+Hans-Jörg Schulz
+BASIC CHARTS HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+1. INTRODUCTION 3. BASIC CHART TYPES
+Basics
+      Visualization
+Building Blocks
+& Processes
+     Visualization
+Techniques
+Visualization
+Applications
+2. VISUAL ENCODING
+4. INTERACTION
+6. DATA PREPROCESSING
+5. VISUALIZATION DESIGN
+7. RECAP 1st Half
+8. MULTIVARIATE DATAVIS
+10. GEOSPATIAL DATAVIS
+9. TEMPORAL DATAVIS
+11. GRAPH DATAVIS
+12. 3D DATAVIS 13. VISUAL ANALYTICS
+14. RECAP 2nd Half
+BASIC CHARTS HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+WHY TALK ABOUT BASIC CHARTS?
+Charting Wizard MS Excel Charting Wizard Libre Calc
+BASIC CHARTS HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+BASIC CHARTS AS BUILDING BLOCKS
+
+BASIC CHARTS HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+OVERVIEW
+• Scatterplots incl. Binned Scatterplots, Splatterplots, Connected Scatterplots
+• Line Charts, Stepped Line Charts
+• Area Charts and Stacked Area Charts
+• Bar / Column Charts incl. Stacked Bar Charts, Grouped Bar Charts, Histograms
+• Radial Variants incl. Radar Chart, Coxcomb
+
+=== lecture04.pdf pages=54
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+INTERACTION HANS-JÖRG SCHULZ
+AU
+INTERACTION FOR
+VISUALIZATION
+Hans-Jörg Schulz
+INTERACTION HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+1. INTRODUCTION 3. BASIC CHART TYPES
+Basics
+      Visualization
+Building Blocks
+& Processes
+     Visualization
+Techniques
+Visualization
+Applications
+2. VISUAL ENCODING
+4. INTERACTION
+6. DATA PREPROCESSING
+5. VISUALIZATION DESIGN
+7. RECAP 1st Half
+8. MULTIVARIATE DATAVIS
+10. GEOSPATIAL DATAVIS
+9. TEMPORAL DATAVIS
+11. GRAPH DATAVIS
+12. 3D DATAVIS 13. VISUAL ANALYTICS
+14. RECAP 2nd Half
+INTERACTION HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+WHY TALK ABOUT INTERACTION?
+• Possibility of adjusting the visualization
+-> from viewing to exploring
+• Possibility for issuing visual queries
+-> from typing to selecting or sketching
+• Possibility for enhancing the visualization
+-> from screenshot to annotated animation
+• Possibility to cater to diverse users & tasks
+-> from one-size-fits-all to tailored vis
+
+INTERACTION HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+OVERVIEW
+• Visual Information Seeking:
+• Overview & Detail   and   Zoom & Pan
+• Focus & Context   and   Interactive Lenses
+• Multiple Coordinated Views   and   Brushing & Linking
+• Tangible Interaction for Data Visualization
+DEPARTMENT OF COMPUTER SCIENCE
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+INTERACTION HANS-JÖRG SCHULZAARHUS
+UNIVERSITY
+AU
+VISUAL INFORMATION
+SEEKING –
+OVERVIEW & DETAIL
+
+=== lecture05.pdf pages=50
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+VISUALIZATION DESIGN HANS-JÖRG SCHULZ
+AU
+VISUALIZATION DESIGN
+Hans-Jörg Schulz
+VISUALIZATION DESIGN HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+1. INTRODUCTION 3. BASIC CHART TYPES
+Basics
+      Visualization
+Building Blocks
+& Processes
+     Visualization
+Techniques
+Visualization
+Applications
+2. VISUAL ENCODING
+4. INTERACTION
+6. DATA PREPROCESSING
+5. VISUALIZATION DESIGN
+7. RECAP 1st Half
+8. MULTIVARIATE DATAVIS
+10. GEOSPATIAL DATAVIS
+9. TEMPORAL DATAVIS
+11. GRAPH DATAVIS
+12. 3D DATAVIS 13. VISUAL ANALYTICS
+14. RECAP 2nd Half
+VISUALIZATION DESIGN HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+WHY TALK ABOUT VIS DESIGN?
+How to get from a visualization problem to a visualization solution?
+
+VISUALIZATION DESIGN HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+OVERVIEW
+• The Visualization Problem
+• Data Abstraction
+• Task Abstraction
+• Design Processes for Data Visualization
+• Design Activity Framework
+• 5 Design Sheet Methodology
+• Evaluating the Resulting Visualization Solution
+• Munzner’s Nested Model for Visualization Design
+DEPARTMENT OF COMPUTER SCIENCE
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+VISUALIZATION DESIGN HANS-JÖRG SCHULZAARHUS
+UNIVERSITY
+AU
+THE VISUALIZATION PROBLEM:
+DATA ABSTRACTION
+
+=== lecture06.pdf pages=46
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DATA PREPROCESSING HANS-JÖRG SCHULZ
+AU
+DATA PREPROCESSING
+PLEASE SIT IN YOUR PROJECT GROUPS.
+DATA PREPROCESSING HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+1. INTRODUCTION 3. BASIC CHART TYPES
+Basics
+      Visualization
+Building Blocks
+& Processes
+     Visualization
+Techniques
+Visualization
+Applications
+2. VISUAL ENCODING
+4. INTERACTION
+6. DATA PREPROCESSING
+5. VISUALIZATION DESIGN
+7. RECAP 1st Half
+8. MULTIVARIATE DATAVIS
+10. GEOSPATIAL DATAVIS
+9. TEMPORAL DATAVIS
+11. GRAPH DATAVIS
+12. 3D DATAVIS 13. VISUAL ANALYTICS
+14. RECAP 2nd Half
+DATA PREPROCESSING HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+WHY TALK ABOUT PREPROCESSING? 1/3
+Issue 1: Data Characteristics are Unknown
+Image Source: [Schulz et al. 2017]
+DATA PREPROCESSING HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+WHY TALK ABOUT PREPROCESSING? 2/3
+​Source: The Quartz Guide to Bad Data
+Issue 2: Poor Data Quality
+DATA PREPROCESSING HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+WHY TALK ABOUT PREPROCESSING? 3/3
+Issue 3: Too many data
+Crimes in Philadephia (2006-2013): Full dataset on the left (700k data points),
+       Sample on the right (5,3k data points)
+Image Source: [Zheng et al. 2021]
+
+=== lecture07.pdf pages=7
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+RECAP 1ST HALF HANS-JÖRG SCHULZ
+AU
+ROUND-UP OF 1ST HALF
+Hans-Jörg Schulz
+RECAP 1ST HALF HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+1. INTRODUCTION 3. BASIC CHART TYPES
+Basics
+      Visualization
+Building Blocks
+& Processes
+     Visualization
+Techniques
+Visualization
+Applications
+2. VISUAL ENCODING
+4. INTERACTION
+6. DATA PREPROCESSING
+5. VISUALIZATION DESIGN
+7. RECAP 1st Half
+8. MULTIVARIATE DATAVIS
+10. GEOSPATIAL DATAVIS
+9. TEMPORAL DATAVIS
+11. GRAPH DATAVIS
+12. 3D DATAVIS 13. VISUAL ANALYTICS
+14. RECAP 2nd Half
+RECAP 1ST HALF HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+NESTED MODEL
+ Domain: application field … usage scenario
+      => target users
+      => needs for visualization
+      => representational conventions
+Data / Task: what is to be shown to which end
+      => abstract data description
+      => abstract task description
+      => which task on which data -> workflow
+Visual encoding: how shall the data be shown
+      => visual entity budget / decluttering
+      => positioning / placement w.r.t. mental map
+      => labeling
+Algorithm: how to realize / implement that
+      => iterative / incremental
+      => optimal / heuristic
+      => fixed / parametrizable
+Image source: T.Munzner 2014
+https://doi.org/10.1109/TVCG.2009.111
+RECAP 1ST HALF HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+THE VISUALIZATION PIPELINE
+Interaction
+Perception
+[Haber, McNabb 1990] and [Card, Mackinley 1999]
+https://www.academia.edu/download/40903302/HaberMcNabb1990.pdf
+http://www.sci.utah.edu/vrc2005/McCormick-1987-VSC.pdf
+Image source: InfoVis Wiki
+RECAP 1ST HALF HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+V.WIJK’S VISUALIZATION MODEL
+D = data
+S = specification
+V = visualization
+I = image
+P = perception
+K = knowledge
+E = interactive exploration
+Image source: v.Wijk 2005
+https://doi.org/10.1109/VISUAL.2005.1532781
+
+=== lecture09.pdf pages=42
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY DATAVIS  FALL 2025 ASSOCIATE PROFESSOR
+TIME VISUALIZATION HANS-JÖRG SCHULZ
+AU
+VISUALIZATION OF
+TEMPORAL DATA
+Hans-Jörg Schulz
+RECAP 1st half HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+Department of Computer Science
+AARHUS
+UNIVERSITY
+AU
+1. INTRODUCTION 3. BASIC CHART TYPES
+Basics
+      Visualization
+Building Blocks
+& Processes
+     Visualization
+Techniques
+Visualization
+Applications
+2. VISUAL ENCODING
+4. INTERACTION
+6. DATA PREPROCESSING
+5. VISUALIZATION DESIGN
+7. RECAP 1st Half
+8. MULTIVARIATE DATAVIS
+10. GEOSPATIAL DATAVIS
+9. TEMPORAL DATAVIS
+11. GRAPH DATAVIS
+12. 3D DATAVIS 13. VISUAL ANALYTICS
+14. RECAP 2nd Half
+RECAP 1st half HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+Department of Computer Science
+AARHUS
+UNIVERSITY
+AU
+
+TIME VISUALIZATION HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+OVERVIEW
+​1. Principles of Time Vis
+• Data & Task Characterization
+• Principle Mapping Possibilities
+• Horizon Graphs
+​2. Visualizing Time Intervals
+• Triangular Model
+​3. Visualizing Event-based Data
+• Outflow
+• Time Maps
+4. Interaction Techniques
+• Stack Zooming
+• ChronoLenses
+DEPARTMENT OF COMPUTER SCIENCE
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+TIME VISUALIZATION HANS-JÖRG SCHULZAARHUS
+UNIVERSITY
+AU
+PRINCIPLES OF TIME VIS
+
+=== lecture10.pdf pages=51
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+GEOVIUALIZATIONS HANS-JÖRG SCHULZ
+AU
+GEOSPATIAL
+VISUALIZATION
+Hans-Jörg Schulz
+RECAP 1st half HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+Department of Computer Science
+AARHUS
+UNIVERSITY
+AU
+1. INTRODUCTION 3. BASIC CHART TYPES
+Basics
+      Visualization
+Building Blocks
+& Processes
+     Visualization
+Techniques
+Visualization
+Applications
+2. VISUAL ENCODING
+4. INTERACTION
+6. DATA PREPROCESSING
+5. VISUALIZATION DESIGN
+7. RECAP 1st Half
+8. MULTIVARIATE DATAVIS
+10. GEOSPATIAL DATAVIS
+9. TEMPORAL DATAVIS
+11. GRAPH DATAVIS
+12. 3D DATAVIS 13. VISUAL ANALYTICS
+14. RECAP 2nd Half
+GEOVISUALIZATION HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+WHY TALK ABOUT GEOVISUALIZATION?
+Geovis / Thematic Cartography is in many ways the foundations of data vis.
+
+GEOVISUALIZATION HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+
+GEOVISUALIZATION HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+ Image source: https://public.tableau.com/app/profile/ken.flerlage/viz/VisualizingthePresidentialElection/Title
+
+=== lecture11.pdf pages=53
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+GRAPH VISUALIZATION HANS-JÖRG SCHULZ
+AU
+GRAPH VISUALIZATION
+Hans-Jörg Schulz
+GRAPH VISUALIZATION HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+1. INTRODUCTION 3. BASIC CHART TYPES
+Basics
+      Visualization
+Building Blocks
+& Processes
+     Visualization
+Techniques
+Visualization
+Applications
+2. VISUAL ENCODING
+4. INTERACTION
+6. DATA PREPROCESSING
+5. VISUALIZATION DESIGN
+7. RECAP 1st Half
+8. MULTIVARIATE DATAVIS
+10. GEOSPATIAL DATAVIS
+9. TEMPORAL DATAVIS
+11. GRAPH DATAVIS
+12. 3D DATAVIS 13. VISUAL ANALYTICS
+14. RECAP 2nd Half
+GRAPH VISUALIZATION HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+WHY TALK ABOUT GRAPH VISUALIZATION?
+Graphs / networks put two data items into relation to each other.
+• Social networks
+• Computer networks
+• Call graphs of a software
+• Traffic networks
+• …
+If that relation is hierarchical, we also speak of a tree structure.
+GRAPH VISUALIZATION HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+DATA VALUES VS. DATA RELATION
+
+GRAPH VISUALIZATION HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+FUNDAMENTAL TERMS
+​Data item => Node
+​Data relation => Edge
+​# of Data items related to a given data item X => Degree of X
+​Numerical attributes of nodes and edges => Weights
+​Graph w/o cycles => Tree
+​Dedicated node of a tree => Root
+​Data item A (closer to the root) having an edge to B (further from the root)
+​       => A is the Parent, B is the Child
+Nodes having the same parent => Siblings
+Nodes having no children => Leaves
+​Average # of children in a tree => Branching factor
+
+=== lecture13.pdf pages=58
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+VISUAL ANALYTICS HANS-JÖRG SCHULZ
+AU
+VISUAL ANALYTICS
+Hans-Jörg Schulz
+VISUAL ANALYTICS HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+1. INTRODUCTION 3. BASIC CHART TYPES
+Basics
+      Visualization
+Building Blocks
+& Processes
+     Visualization
+Techniques
+Visualization
+Applications
+2. VISUAL ENCODING
+4. INTERACTION
+6. DATA PREPROCESSING
+5. VISUALIZATION DESIGN
+7. RECAP 1st Half
+8. MULTIVARIATE DATAVIS
+10. GEOSPATIAL DATAVIS
+9. TEMPORAL DATAVIS
+11. GRAPH DATAVIS
+12. 3D DATAVIS 13. VISUAL ANALYTICS
+14. RECAP 2nd Half
+VISUAL ANALYTICS HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+video source: https://youtu.be/5uGRGqCFryg
+
+VISUAL ANALYTICS HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+VISUAL ANALYTICS
+​“Visual analytics combines automated analysis techniques with interactive
+visualizations for an effective understanding, reasoning and decision
+making on the basis of very large and complex datasets.”
+​Keim et al. 2008
+[ https://doi.org/10.1007/978-3-540-70956-5_7 ]
+[ https://doi.org/10.2312/14803 ]
+
+VISUAL ANALYTICS HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+WHY TALK ABOUT VISUAL ANALYTICS?
+VA comes with a series of challenges in its own right:
+• Computational analysis is often a long-running, time consuming process,
+while visual data analysis is fast-paced and interactive.
+• Visualization must not only be expressive of the underlying data, but the
+underlying computational processes
+• The aim of VA is
+• ill-defined: “generate insight in the data”
+• subjective: “confirm the expected and discover the unexpected”
+• elusive / iterative: the moment you reach an analysis goal, it shifts…
+• constrained: results must be ready to base timely decisions on them
+
+=== VisualizationLecture3DViz.pdf pages=54
+Data Visualization Course: Guest Lecture Stefanie 
+Zollmann
+3D Visualisation Visualisation for 3D or 3D for Visualisation
+
+3D Visualisation - Why?
+3
+BAD!!!
+3D Visualisation - Why?
+4
+Still bad
+
+3D Visualisation Examples - Geographic Data
+5
+https://sandcastle.cesium.com/?id=cesium-world-terrain
+3D Visualisation Examples - Medical Datasets
+6
+
+

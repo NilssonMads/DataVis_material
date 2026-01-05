@@ -1,0 +1,200 @@
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+VISUALIZATION DESIGN HANS-JÖRG SCHULZ
+AU
+VISUALIZATION DESIGN
+Hans-Jörg SchulzVISUALIZATION DESIGN HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+1. INTRODUCTION 3. BASIC CHART TYPES
+Basics
+      Visualization
+Building Blocks
+& Processes
+     Visualization
+Techniques
+Visualization
+Applications
+2. VISUAL ENCODING
+4. INTERACTION
+6. DATA PREPROCESSING
+5. VISUALIZATION DESIGN
+7. RECAP 1st Half
+8. MULTIVARIATE DATAVIS
+10. GEOSPATIAL DATAVIS
+9. TEMPORAL DATAVIS
+11. GRAPH DATAVIS
+12. 3D DATAVIS 13. VISUAL ANALYTICS
+14. RECAP 2nd HalfVISUALIZATION DESIGN HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+WHY TALK ABOUT VIS DESIGN?
+How to get from a visualization problem to a visualization solution?
+VISUALIZATION DESIGN HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+OVERVIEW
+• The Visualization Problem
+• Data Abstraction
+• Task Abstraction
+• Design Processes for Data Visualization
+• Design Activity Framework
+• 5 Design Sheet Methodology
+• Evaluating the Resulting Visualization Solution
+• Munzner’s Nested Model for Visualization DesignDEPARTMENT OF COMPUTER SCIENCE
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+VISUALIZATION DESIGN HANS-JÖRG SCHULZAARHUS
+UNIVERSITY
+AU
+THE VISUALIZATION PROBLEM:
+DATA ABSTRACTIONVISUALIZATION DESIGN HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+WHAT IS DATA?
+​                 The DIKW Hierarchy
+• Facts (e.g., names and favorite colors)
+• Measurements (e.g., weight and length)
+• Observations (e.g., eye color and spoken languages)
+• Distributions (e.g., trends, clusters, outliers)
+• Relations (e.g., correlations, associations)
+• Recognition (e.g., classification, matching)
+• Models (e.g., simulation models, statistical models)
+• Parameters (e.g., controls, influencing factors)
+• Limitations (e.g., boundary conditions)
+• Prognoses (e.g., decision X will lead to outcome Y)
+• Reasoning (e.g., if X leads to Y, then X’ will lead to Y’)
+• Adaptation (e.g., situation Z => situation Z’)
+Know What:
+phenomenological
+analysis
+Know Why:
+causal analysis
+Know How:
+actional analysis
+Further reading: Min Chen et al. 2009
+“Data, Information, and Knowledge in Visualization”VISUALIZATION DESIGN HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+Plain Parallel Coordinates Visualization Confluent Parallel Coordinates Visualization
+Image Source: Cui et al. 2019
+Data Information
+VISUALIZING DATA VS. INFORMATIONVISUALIZATION DESIGN HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+THE DATA SPACE
+DATA CONTEXT
+DATA DOMAIN
+REFERENCE SPACE
+INDEPENDENT VARIABLES
+DATA CONTENT
+DATA VALUES
+ATTRIBUTE SPACE
+DEPENDENT VARIABLES
+Frame of reference for any measured or
+observed data characteristic. Examples:
+- Latitude / Longitude
+- Time
+- CPR number
+Important Properties:
+- Extent of Validity: point, local, global
+- Topology, Grid type
+Gathered data at a particular reference point.
+Examples:
+- Temperature
+- CO2 concentration
+- Wind speed & direction
+Important Properties:
+- Data type: categorical, numerical,…
+- Data structure: scalar, vector, tensor
+- Value ranges
+Source: [Schulz et al. 2017]VISUALIZATION DESIGN HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+THE DATA CONTEXT – EXTENT 
+Image source [MacEachren 1992]
+Point
+narrow, discrete
+Global
+Local
+broad, discrete
+narrow, continuous
+broad, continuousVISUALIZATION DESIGN HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+THE DATA CONTEXT – INTERPOLATION
+?
+Inverse Distance Weighting – Shephard’s Method
+withVISUALIZATION DESIGN HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+THE DATA CONTEXT – INTERPOLATION
+Inverse Distance Weighting – Shephard’s Method
+with
+Influence of the Power Parameter p:
+Image source: WikipediaVISUALIZATION DESIGN HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+[Donald Shepard 1968]VISUALIZATION DESIGN HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+THE DATA CONTEXT – TOPOLOGY
+Irregular Grid Regular Grid
+ Hierarchy
+Network
+Grid-based Topology Graph-based TopologyVISUALIZATION DESIGN HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+THE DATA CONTENT – TYPE
+Quantitative Data Qualitative Data
+Continuous Data Discrete Data Ordinal Data Categorical Data
+Interpolate
+Sort
+Match
+Difference
+
+
+
+
+
+
+
+
+ 
+​Adapted from [Stevens 1946] – DOI: 10.1126/science.103.2684.677VISUALIZATION DESIGN HANS-J

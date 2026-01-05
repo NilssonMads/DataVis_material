@@ -1,0 +1,91 @@
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+RECAP 1ST HALF HANS-JÖRG SCHULZ
+AU
+ROUND-UP OF 1ST HALF
+Hans-Jörg SchulzRECAP 1ST HALF HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+1. INTRODUCTION 3. BASIC CHART TYPES
+Basics
+      Visualization
+Building Blocks
+& Processes
+     Visualization
+Techniques
+Visualization
+Applications
+2. VISUAL ENCODING
+4. INTERACTION
+6. DATA PREPROCESSING
+5. VISUALIZATION DESIGN
+7. RECAP 1st Half
+8. MULTIVARIATE DATAVIS
+10. GEOSPATIAL DATAVIS
+9. TEMPORAL DATAVIS
+11. GRAPH DATAVIS
+12. 3D DATAVIS 13. VISUAL ANALYTICS
+14. RECAP 2nd HalfRECAP 1ST HALF HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+NESTED MODEL
+ Domain: application field … usage scenario
+      => target users
+      => needs for visualization
+      => representational conventions
+Data / Task: what is to be shown to which end
+      => abstract data description
+      => abstract task description
+      => which task on which data -> workflow
+Visual encoding: how shall the data be shown
+      => visual entity budget / decluttering
+      => positioning / placement w.r.t. mental map
+      => labeling
+Algorithm: how to realize / implement that
+      => iterative / incremental
+      => optimal / heuristic
+      => fixed / parametrizable
+Image source: T.Munzner 2014
+https://doi.org/10.1109/TVCG.2009.111RECAP 1ST HALF HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+THE VISUALIZATION PIPELINE
+Interaction
+Perception
+[Haber, McNabb 1990] and [Card, Mackinley 1999]
+https://www.academia.edu/download/40903302/HaberMcNabb1990.pdf
+http://www.sci.utah.edu/vrc2005/McCormick-1987-VSC.pdf
+Image source: InfoVis WikiRECAP 1ST HALF HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+V.WIJK’S VISUALIZATION MODEL
+D = data
+S = specification
+V = visualization
+I = image
+P = perception
+K = knowledge
+E = interactive exploration
+Image source: v.Wijk 2005
+https://doi.org/10.1109/VISUAL.2005.1532781RECAP 1ST HALF HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+PRODUCES USED FOR
+VISUALIZATION DESIGN VISUAL DATA ANALYSIS
+VISUALIZATION

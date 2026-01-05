@@ -1,0 +1,41 @@
+=== 08_lecture_cut.pdf pages=51
+DEPARTMENT OF COMPUTER SCIENCE DAVI FALL 2024 ASSOCIATE PROFESSOR MULTIVARIATE VIS HANS-JÖRG SCHULZAARHUS UNIVERSITY VISUALIZING MULTIVARIATE DATA
+
+=== DataVis 2025 Chart Lexicon.pdf pages=6
+Visualization Technique Lexicon 2025  1D  1D Quantitative:  Just a set of numbers, e.g. all ages in the room  • Histogram  • Violin  • Boxplot, Box and whiskers plot  • Bee swarm plot      1D Qualitative:  All we have are categorical values e.g. haircolors  • Piechart  • Waffle chart (works as long as not too many data points)  • Barchart  • Radarchart (works as long as not too many categories)  • Treemap (scale areas of tree maps according to time)  1D Temporal:   All we have is a series of time steps (i.e. no related quantity).   • Histogram (if data not too sparse)  • Instance chart (time on one axis and then data plotted as instances)  o Can be transformed into 1D heatmap  • Time map (plotting time from previous event on x-axis, time to next event on y-axis.  Data must be from same source)  o Example: scatter plot (like the twitter plot where we saw bot pattern)  
+
+=== lecture01.pdf pages=119
+DEPARTMENT OF COMPUTER SCIENCE AARHUS UNIVERSITY DATAVIS 2025 ASSOCIATE PROFESSOR INTRODUCTION HANS-JÖRG SCHULZ AU INTRODUCTION TO DATA VISUALIZATION Hans-Jörg Schulz
+
+=== lecture02 (1).pdf pages=101
+DEPARTMENT OF COMPUTER SCIENCE AARHUS UNIVERSITY FALL 2025 ASSOCIATE PROFESSOR DAVI - ENCODING HANS-JÖRG SCHULZ AU VISUAL ENCODING Please find a different seat from last week!
+
+=== lecture03 (1).pdf pages=71
+DEPARTMENT OF COMPUTER SCIENCE AARHUS UNIVERSITY DATAVIS FALL 2025 ASSOCIATE PROFESSOR BASIC CHARTS HANS-JÖRG SCHULZ AU BASIC CHART TYPES Hans-Jörg Schulz
+
+=== lecture04.pdf pages=54
+DEPARTMENT OF COMPUTER SCIENCE AARHUS UNIVERSITY DATAVIS FALL 2025 ASSOCIATE PROFESSOR INTERACTION HANS-JÖRG SCHULZ AU INTERACTION FOR VISUALIZATION Hans-Jörg Schulz
+
+=== lecture05.pdf pages=50
+DEPARTMENT OF COMPUTER SCIENCE AARHUS UNIVERSITY DATAVIS FALL 2025 ASSOCIATE PROFESSOR VISUALIZATION DESIGN HANS-JÖRG SCHULZ AU VISUALIZATION DESIGN Hans-Jörg Schulz
+
+=== lecture06.pdf pages=46
+DEPARTMENT OF COMPUTER SCIENCE AARHUS UNIVERSITY DATAVIS FALL 2025 ASSOCIATE PROFESSOR DATA PREPROCESSING HANS-JÖRG SCHULZ AU DATA PREPROCESSING PLEASE SIT IN YOUR PROJECT GROUPS.
+
+=== lecture07.pdf pages=7
+DEPARTMENT OF COMPUTER SCIENCE AARHUS UNIVERSITY DATAVIS FALL 2025 ASSOCIATE PROFESSOR RECAP 1ST HALF HANS-JÖRG SCHULZ AU ROUND-UP OF 1ST HALF Hans-Jörg Schulz
+
+=== lecture09.pdf pages=42
+DEPARTMENT OF COMPUTER SCIENCE AARHUS UNIVERSITY DATAVIS  FALL 2025 ASSOCIATE PROFESSOR TIME VISUALIZATION HANS-JÖRG SCHULZ AU VISUALIZATION OF TEMPORAL DATA Hans-Jörg Schulz
+
+=== lecture10.pdf pages=51
+DEPARTMENT OF COMPUTER SCIENCE AARHUS UNIVERSITY DATAVIS FALL 2025 ASSOCIATE PROFESSOR GEOVIUALIZATIONS HANS-JÖRG SCHULZ AU GEOSPATIAL VISUALIZATION Hans-Jörg Schulz
+
+=== lecture11.pdf pages=53
+DEPARTMENT OF COMPUTER SCIENCE AARHUS UNIVERSITY DATAVIS FALL 2025 ASSOCIATE PROFESSOR GRAPH VISUALIZATION HANS-JÖRG SCHULZ AU GRAPH VISUALIZATION Hans-Jörg Schulz
+
+=== lecture13.pdf pages=58
+DEPARTMENT OF COMPUTER SCIENCE AARHUS UNIVERSITY DATAVIS FALL 2025 ASSOCIATE PROFESSOR VISUAL ANALYTICS HANS-JÖRG SCHULZ AU VISUAL ANALYTICS Hans-Jörg Schulz
+
+=== VisualizationLecture3DViz.pdf pages=54
+Data Visualization Course: Guest Lecture Stefanie  Zollmann 3D Visualisation Visualisation for 3D or 3D for Visualisation 
