@@ -1,0 +1,343 @@
+=== VisualComputing_L01_Intro.pdf pages=83
+Visual Computing I:  
+Interactive Computer Graphics and Vision
+Intro 
+Stefanie Zollmann and Tobias Langlotz 
+
+Welcome! 
+What is Visual Computing 
+30% of our brain dedicated to visual processing
+What is Visual Computing 
+4
+What is Visual Computing 
+Computer  
+Graphics
+Stanford Bunny Cornell box Utah Teapot
+ 5
+What is Visual Computing 
+Computer  
+Vision
+Scene Reconstruction (Larry Roberts "Machine Perception 
+of Three-Dimensional Solids”) 6
+ORBSlam
+What is Visual Computing 
+Computer  
+Vision
+7
+What is Visual Computing 
+Movies (Avatar)
+Computer  
+Vision
+Computer  
+Graphics
+8
+Movies (Motion Capturing / Andy Serkins)
+Computer  
+Vision
+Computer  
+Graphics
+What is Visual Computing 
+9
+Games (Unreal Engine Demo)
+Computer  
+Vision
+Computer  
+Graphics
+Visual  
+Computing
+What is Visual Computing 
+10
+
+=== VisualComputingL02Digital Images.pdf pages=72
+Digital Images and Colour Representation 
+Tobias Langlotz
+Visual Computing I:  
+Interactive Computer Graphics and Vision
+Last time 
+Visual Computing I: 
+Interactive Computer 
+Graphics and Vision
+Design of the course
+Industry Experience and Examples
+Similar Courses
+Literature
+Expert Societies
+Academic Background 3
+Ivan Sutherland, Sketchpad, a Man–Machine 
+Graphical Communication System,1963
+A Short History of Visual Computing 
+4
+Digital Images and 
+2D Image Representation 
+Digital Images and 2D Image Representation
+• 2D array of pixels – a raster 
+• Pixels have a value, or list of values 
+• value: usually brightness 
+• values: brightness, colour, transparency
+6
+Digital Images and 2D Image Representation
+• 2D array of pixels – a raster 
+• Pixels have a value, or list of values 
+• value: usually brightness 
+• values: brightness, colour, transparency
+# Create a 2D array 
+image2D = create_array(height, width) 
+# Fill with example grayscale values 
+for y from 0 to height-1: 
+    for x from 0 to width-1: 
+        image2D[y][x] = 125 
+7
+Digital Images and 2D Image Representation
+• 2D array of pixels – a raster 
+• Pixels have a value, or list of values 
+• value: usually brightness 
+• values: brightness, colour, transparency
+# Create a 2D array 
+image2D = create_array(height, width) 
+# Fill with example grayscale values 
+for y from 0 to height-1: 
+    for x from 0 to width-1: 
+        image2D[y][x] = 125 
+8
+Digital Images and 2D Image Representation
+• 2D array of pixels – a raster 
+• Pixels have a value, or list of values 
+• value: usually brightness 
+• values: brightness, colour, transparency
+# Create a 2D array 
+image2D = create_array(height, width) 
+# Fill with example grayscale values 
+for y from 0 to height-1: 
+    for x from 0 to width-1: 
+        image2D[y][x] = 125 
+# Access pixel at (row=2, col=3) 
+image2D[1][2]= 0 
+9
+Digital Images and 2D Image Representation
+# Create a 2D array 
+image2D = create_array(height, width) 
+# Fill with example grayscale values 
+for y from 0 to height-1: 
+    for x from 0 to width-1: 
+        image2D[y][x] = 125 
+• 2D array of pixels – a raster 
+• Pixels have a value, or list of values 
+• value: usually brightness 
+• values: brightness, colour, transparency
+image2D = 
+[ 
+  [ 0, 1, 2, 3 ],     # row 0 
+  [ 0, 1, 2, 3 ],     # row 1 
+  [ 0, 1, 2, 3 ]    # row 2 
+] 10
+
+=== VC_L03_2DTransforms.pdf pages=49
+X
+Visual Computing I:  
+Interactive Computer Graphics and Vision
+2D Transforms 
+Stefanie Zollmann
+
+Quiz 
+Detect the red 
+balloons in this photo.  
+Which color model is 
+best to work in?  
+Why?
+
+Original Image Red Channel Greyscale Hue from HSV
+
+2D Geometry  
+6
+Points, Lines, etc.
+• A point is a 2D location  
+• Two points deﬁne a line 
+• A polyline with  segments is a sequence of  points 
+• A polygon is a polyline where  
+• We often omit the duplicate point
+k k + 1
+(𝑢,  𝑣)
+(𝑢0,  𝑣0),  (𝑢1, 𝑣1)
+(𝑢0, 𝑣0),  (𝑢1, 𝑣1),  … ,  (𝑢𝑘,  𝑣𝑘)
+(𝑢0, 𝑣0) = (𝑢𝑘,  𝑣𝑘)
+7
+Points, Lines, etc.
+• A point,  
+• A line,  
+• A polyline,  
+ 
+• A polygon, 
+ 
+ 
+(5, 3)
+(−4, 3),  (2, 1)
+ (−6, 1),  (−4,  − 1),  
+(−6,  − 4),  ( − 1,  − 3)
+ (4, 0),  (5, 1),  (6,  − 1),
+(4,  − 4),  (2,  − 1)
+𝑉
+𝑈
+8
+Points as Vectors
+• We represent points as vectors 
+• We can think of this vector as: 
+• The point  
+• A direction, or step of  units along one 
+axis and  units along the other 
+• The point is where you end up if you 
+step along the vector from the origin 
+u
+v
+𝑉
+𝑈u = 4
+v = 3
+(u, v) = (4, 3)
+ 
+(𝑢,  𝑣) → [
+𝑢
+𝑣] = [𝑢 𝑣]𝑇
+(𝑢,  𝑣)
+9
+Example: 2D Points in OpenCV
+• In OpenCV, cv::Point (or cv::Point2f for ﬂoats) represents a 2D point
+#include <opencv2/opencv.hpp> 
+#include <iostream> 
+using namespace std; 
+int main() { 
+    // Create some points 
+    cv::Point p1(50, 50);          // integer coordinates 
+    cv::Point2f p2(120.5f, 80.3f); // float coordinates 
+    // Print points 
+    cout << "p1 = " << p1 << endl; 
+    cout << "p2 = " << p2 << endl; 
+    // Visualize on a blank image 
+    cv::Mat img = cv::Mat::zeros(200, 200, CV_8UC3); 
+    circle(img, p1, 5, cv::Scalar(0, 0, 255), cv::FILLED);  // red dot 
+    circle(img, p2, 5, cv::Scalar(0, 255, 0), cv::FILLED);  // green dot 
+    line(img, p1, p2, cv::Scalar(255, 255, 0), 2);      // yellow line 
+    cv::imshow("Points", img); 
+    cv::waitKey(0); 
+    return 0; 
+} 
+
+10
+Choice of Coordinate Systems
+• : left -> right 
+• : bottom -> top
+𝑈
+𝑉
+• : top -> bottom 
+• : left -> right
+𝑅
+𝐶
+• : left -> right 
+• : top -> bottom
+𝑈
+𝑉
+𝑈
+𝑉
+𝑈
+𝑉
+𝑎11 𝑎12
+𝑎21 𝑎22
+⋯ 𝑎1𝑛
+𝑎2𝑛
+⋮ ⋱ ⋮
+𝑎𝑚1 𝑎𝑚2 ⋯ 𝑎𝑚𝑛
+𝐶
+𝑅
+Image-basedMathematical Matrix-based
+
+=== VisualComputingL04ImageManipulation.pdf pages=102
+Visual Computing I:  
+Interactive Computer Graphics and Vision
+Digital Image Processing (Manipulation and Analysis) Stefanie Zollmann and Tobias Langlotz 
+
+Last time.. 
+
+
+2D Image Manipulation 
+• Luminance 
+• Brightness 
+• Contrast 
+• Histogram equalization 
+• Gamma 
+• Color 
+• Grayscale 
+•  Saturation 
+•  Dithering 
+• Quantization 
+• Random dither 
+• Floyd-Steinberg
+2D Image Processing 
+6
+• Linear ﬁltering 
+• Convolution 
+• Blur & Sharpen 
+• Edge detection 
+• Image Pyramids 
+• Non-linear ﬁltering 
+• Median 
+• Image Feature Detection 
+• Edges (e.g Canny Edge) 
+• Corners (e.g. Shi-Tomasi, 
+Harris Corner)  
+• Blobs (e.g. Difference of 
+Gaussians)
+• Luminance 
+• Brightness 
+• Contrast 
+• Histogram equalization 
+• Gamma 
+• Color 
+• Grayscale 
+•  Saturation 
+•  Dithering 
+• Quantization 
+• Random dither 
+• Floyd-Steinberg
+2D Image Processing 
+7
+• Linear ﬁltering 
+• Convolution 
+• Blur & Sharpen 
+• Edge detection 
+• Image Pyramids 
+• Non-linear ﬁltering 
+• Median 
+• Image Feature Detection 
+• Edges (e.g Canny Edge) 
+• Corners (e.g. Shi-Tomasi, 
+Harris Corner)  
+• Blobs (e.g. Difference of 
+Gaussians)
+Image Luminance 
+• Measures perceived “gray-level” of pixel 
+• Not so good: 
+• (R+G+B) / 3 
+• Our example: L = 120 
+• Better: 
+• L = 0.30*R + 0.59*G + 0.11*B 
+• Luminosity method (human 
+perception)  
+• Our example: L = 106 
+• What must be done to the RGB values to 
+make this image brighter?
+Luminance
+9
+RGB: (85,103,171) 
+Luminance
+10
+RGB: (85,103,171) 
+• Measures perceived “gray-level” of pixel 
+• Not so good: 
+• (R+G+B) / 3 
+• Our example: L = 120 
+• Better: 
+• L = 0.30*R + 0.59*G + 0.11*B 
+• Luminosity method (human 
+perception)  
+• Our example: L = 106 
+• What must be done to the RGB values to 
+make this image brighter?
+

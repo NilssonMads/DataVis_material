@@ -1,0 +1,436 @@
+=== Visual Computing L05_FeaturesDescription.pdf pages=86
+Visual Computing I: 
+Interactive Computer Graphics and Vision
+Features, Features Description and Feature Matching 
+Stefanie Zollmann and Tobias Langlotz 
+
+Last time.. 
+• Luminance 
+• Brightness 
+• Contrast 
+• Histogram equalization 
+• Gamma 
+• Color 
+• Grayscale 
+•  Saturation 
+•  Dithering 
+• Quantization 
+• Random dither 
+• Floyd-Steinberg
+2D Image Processing 
+3
+• Linear ﬁltering 
+• Convolution 
+• Blur & Sharpen 
+• Edge detection 
+• Image Pyramids 
+• Non-linear ﬁltering 
+• Median 
+• Image Feature Detection 
+• Edges (e.g Canny Edge) 
+• Corners (e.g. Shi-Tomasi, 
+Harris Corner)  
+• Blobs (e.g. Difference of 
+Gaussians)
+4
+Original
+ Edge verticalEdge horizontal
+0 0 0
+0 1 0
+0 0 0
+− 1
+2 0 1
+2
+−1 0 1
+− 1
+2 0 1
+2
+− 1
+2 −1 − 1
+2
+−0 0 0
+1
+2 1 1
+2
+Linear Filters and Image Convolutions 
+Edge (Sobel Operator)
+5
+Original
+Edge vertical/ 
+horizontal
+Edge horizontal/ 
+vertical
+0 0 0
+0 1 0
+0 0 0
+− 1
+2 0 1
+2
+−1 0 1
+− 1
+2 0 1
+2
+− 1
+2 −1 − 1
+2
+−0 0 0
+1
+2 1 1
+2
+Linear Filters and Image Convolutions 
+Edge (Sobel Operator)
+6
+Linear Filters and Image Convolutions 
+• The short answer is: Yes, in pure mathematics and traditional signal processing, 
+the deﬁnition of convolution involves ﬂipping the kernel. However, also No because 
+in computer vision, graphics, and deep learning, the operation we call 
+"convolution" is actually cross-correlation, which does not ﬂip the kernel.  
+• There is a lot of subtlety and differences between the meanings of convolution and 
+correlation in different ﬁelds (also Tobias did not know about that)
+• Flipping operator in convolutions?!
+• Luminance 
+• Brightness 
+• Contrast 
+• Histogram equalization 
+• Gamma 
+• Color 
+• Grayscale 
+•  Saturation 
+•  Dithering 
+• Quantization 
+• Random dither 
+• Floyd-Steinberg
+2D Image Processing 
+7
+• Linear ﬁltering 
+• Convolution 
+• Blur & Sharpen 
+• Edge detection 
+• Image Pyramids 
+• Non-linear ﬁltering 
+• Median 
+• Image Feature Detection 
+• Edges (e.g Canny Edge) 
+• Corners (e.g. Shi-Tomasi, 
+Harris Corner)  
+• Blobs (e.g. Difference of 
+Gaussians)
+• Luminance 
+• Brightness 
+• Contrast 
+• Histogram equalization 
+• Gamma 
+• Color 
+• Grayscale 
+•  Saturation 
+•  Dithering 
+• Quantization 
+• Random dither 
+• Floyd-Steinberg
+2D Image Processing 
+8
+• Linear ﬁltering 
+• Convolution 
+• Blur & Sharpen 
+• Edge detection 
+• Image Pyramids 
+• Non-linear ﬁltering 
+• Median 
+• Image Feature Detection 
+• Edges (e.g Canny Edge) 
+• Corners (e.g. Shi-Tomasi, 
+Harris Corner)  
+• Blobs (e.g. Difference of 
+Gaussians)
+Image Filters - 
+Non-Linear Filters 
+Non-Linear Filters
+10
+• Not all ﬁlters are implemented as 
+convolution operations 
+• E.g. Median ﬁlter 
+• Take a local neighbourhood (e.g. a 
+ or window) 
+• Sort the pixel values 
+• Use the middle value as the result 
+• Has a smoothing effect, but 
+preserves sharp edges
+3 × 3 5 × 5 
+MedianOriginal
+
+=== VisualComputingL06_Homographies.pdf pages=48
+Visual Computing I:  
+Interactive Computer Graphics and Vision
+Feature Matching, Image Stitching, Homographies Stefanie Zollmann and Tobias Langlotz 
+
+8
+How to find correspondences?
+
+SIFT - Feature matching
+10
+SIFT -  Matching
+• SIFT descriptor 128 values 
+• Usually these are bytes 
+• Computing the distance between 
+features: 
+ 
+• 128 subtractions 
+• 128 multiplications 
+• 127 additions 
+• 1 square root (optional)
+𝑑 = (𝑎1 − 𝑏1)
+2
++ (𝑎2 − 𝑏2)
+2
++ …
+
+11
+SIFT -  Matching
+• SIFT descriptor 128 values 
+• Usually these are bytes 
+• Computing the distance between 
+features: 
+ 
+• 128 subtractions 
+• 128 multiplications 
+• 127 additions 
+• 1 square root (optional)
+𝑑 = (𝑎1 − 𝑏1)
+2
++ (𝑎2 − 𝑏2)
+2
++ …
+12
+SIFT -  Matching
+• SIFT descriptor 128 values 
+• Usually these are bytes 
+• Computing the distance between 
+features: 
+ 
+• 128 subtractions 
+• 128 multiplications 
+• 127 additions 
+• 1 square root (optional)
+𝑑 = (𝑎1 − 𝑏1)
+2
++ (𝑎2 − 𝑏2)
+2
++ …
+• Suppose we have 10,000 features 
+in each image 
+• Brute force method – find 
+distance for each pair 
+• Match is smallest distance 
+• Matching one feature: 
+ operations 
+• Matching all features: 
+ ops
+3,840, 000
+38,400, 000,000
+13
+SIFT -  Approximate Nearest Neighbours
+• Split space into smaller regions 
+• Each feature lies in one region 
+• Only look for matches in same region 
+• Might not find nearest match (why?) 
+• Uniform subdivision: 
+• Divide space into a regular grid 
+• 10 divisions on 2-D grid – 100 
+regions 
+• 10 divisions on 128-D grid – 10128 
+Example for 2D Feature Vector
+14
+SIFT -  Quadtrees, Octrees, etc. 
+• Recursively split space in half along 
+each dimension 
+• Stop splitting when: 
+• Some max depth is reached 
+• Only a few items in the cell 
+• 2-D gives a quadtree 
+• 3-D gives an octree 
+• 128-D: : still too big -> 2128 ~ 1038
+15
+SIFT -  K-D Trees
+• k-dimensional tree 
+• Choose an axis and split along it 
+• Then take each half and repeat 
+• Stop when: 
+• Only a few items in the region 
+• Reached some maximum depth 
+• How to choose splits? 
+• Axis – next, random, greatest 
+spread? 
+• Splitting point – middle or even split?
+16
+SIFT -  K-D Trees
+
+=== VisualComputingL07.pdf pages=48
+Visual Computing I:  
+Interactive Computer Graphics and Vision
+Homographies, RANSAC, Blending Stefanie Zollmann and Tobias Langlotz 
+[
+???
+???
+???]
+Last time.. 
+3
+How to find correspondences?
+
+4
+Image Stitching Process
+• Four main stages: 
+1.Detect features in each image 
+2.Match features between images 
+3.Estimate a transform 
+4.Warp one image to the other 
+• Stitching only works if: 
+• The scene is (almost) planar, or 
+• The camera only (mostly) rotates
+Features 1
+Image 1
+Features 2
+Image 2
+Correspondences
+Transform Matrix
+Stitched Image
+Feature Matching
+Compute Transform
+Warp & Composite
+Feature Detection
+5
+Homographies and Image Stitching
+• To stitch an image: 
+• Need to warp images to align 
+• This warping is a homography 
+• How to ﬁnd the homography? 
+• If a feature at (u,v) in one image  matches to  (u’,v’) in the other, then
+[
+𝑢′ 
+𝑣′ 
+1 ] ≡
+h11 h12 h13
+h21 h22 h23
+h31 h32 h33
+[
+𝑢
+𝑣
+1]
+
+Demo… 
+7
+Solving from Point Correspondences
+• Suppose we have  matching points between two images 
+ 
+• Each pair gives us information about the homography,  
+ 
+• The equivalence makes things difﬁcult: 
+• Everything has an unknown scale factor associated with it 
+• Can’t solve things uniquely – if  is a solution, so is 
+𝑛
+(𝑢1,𝑣1) ↔(𝑢′ 1,𝑣′ 1),(𝑢2,𝑣2) ↔(𝑢′ 2,𝑣′ 2),… (𝑢𝑛,𝑣𝑛) ↔(𝑢′ 𝑛,𝑣′ 𝑛)
+H
+x′ 𝑖 ≡ Hx𝑖
+H
+𝑘H,  ∀𝑘 ≠ 0
+8
+Solving from Point Correspondences
+• Remember: We want to use the relationship:  where 
+• x,x′ are homogeneous 2D points (3×1), 
+• H is the homography (3×3), 
+• λ is an unknown scale factor 
+• The problem: λ is diﬀerent for each correspondence, so it’s not something we can just solve for 
+globally
+• The trick: Equation   means the two vectors x′ and Hx are parallel in 3D (homogeneous 
+coordinate space) -> In other words, one is a scaled version of the other
+• This means their cross product is 0:  
+• No  -> no worry -> Each correspondence provides 2 independent linear equations in the entries of H 
+• Need  at least 4 correspondences to solve for H (8 dof)
+x′ = λHx
+x′ = λHx
+x′ × (Hx) = 0
+λ
+9
+Lets build the equation system 
+[
+𝑢′ 
+𝑣′ 
+1 ] ×
+h1 h2 h3
+h4 h5 h6
+h7 h8 h9
+[
+𝑢
+𝑣
+1] = [
+0
+0
+0]
+[
+u′ 
+v′ 
+1] ×
+h1u + h2v + h3
+h4u + h5v + h6
+h7u + h8v + h9
+= [
+0
+0
+0]
+v′ (h7u + h8v + h9) − (h4 + h5 + h6) = 0
+(h1u + h2v + h3) − u′ (h7y + h8v + h9) = 0
+u′ (h4u + h5v + h6) − v′ (h1u + h2v + h3) = 0
+v′ (h7u + h8v + h9) − (h4 + h5 + h6)
+(h1u + h2v + h3) − u′ (h7y + h8v + h9)
+u′ (h4u + h5v + h6) − v′ (h1u + h2v + h3)
+= [
+0
+0
+0]
+x × y =
+x1
+x2
+x3
+×
+y1
+y2
+y3
+=
+x2y3 − x3y2
+x3y1 − x1y3
+x1y2 − x2y1
+Remember: cross product
+a11 a12 a13
+a21 a22 a23
+a31 a32 a33
+x1
+x2
+x3
+=
+a11x1 + a12 x2 + a13x3
+a21x1 + a22 x2 + a23x3
+a31x1 + a32 x2 + a33x3
+Remember: Matrix/Vector  
+Multiplication
+10
+Finding the Homography
+ 
+• This looks like three equations, but not independent 
+• Use the ﬁrst two (for symmetry) and rewrite as 
+𝑣′ 𝑖(h7𝑢𝑖 + h8𝑣𝑖 + h9) − (h4𝑢𝑖 + h5𝑣𝑖 + h6)
+(h1𝑢𝑖 + h2𝑣𝑖 + h3) − 𝑢′ 𝑖(h7𝑢𝑖 + h8𝑣𝑖 + h9)
+𝑢′ 𝑖(h4𝑢𝑖 + h5𝑣𝑖 + h6) − 𝑣′ 𝑖(h1𝑢𝑖 + h2𝑣𝑖 + h3)
+= [
+0
+0
+0]
+[
+0 0 0 −𝑢𝑖 −𝑣𝑖 −1 𝑢𝑖𝑣′ 𝑖 𝑣𝑖𝑣′ 𝑖 𝑣′ 𝑖
+𝑢𝑖 𝑣𝑖 1 0 0 0 −𝑢𝑖𝑢′ 𝑖 −𝑣𝑖𝑢′ 𝑖 −𝑢′ 𝑖]
+h1
+h2
+⋮
+h9
+= [
+0
+0]
+

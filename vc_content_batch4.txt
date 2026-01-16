@@ -1,0 +1,374 @@
+=== VisualComputingL12Multiview.pdf pages=79
+Visual Computing I:  
+Interactive Computer Graphics and Vision
+Depth Maps Processing, 3D Reconstruction Stefanie Zollmann and Tobias Langlotz 
+
+Last time.. 
+Overview
+3
+• Range Scanning 
+• Passive: 
+• Stereo or Multi-Camera 
+• Active: 
+• Structured Light Projection 
+• Optical Time-of-Flight 
+• Direct ToF 
+• Indirect ToF 
+• Registration of Depth Maps 
+• Processing Depth Maps
+
+Passive Range Scanning
+4
+Camera C1 Camera C3
+Camera C2
+• Two or more cameras 
+• Stereo camera 
+• Two cameras 
+• One camera takes several photos from 
+different perspectives 
+• Multiple cameras 
+• Which one is the easiest and why? 
+• What is the main challenge?
+PointGrey Bumble Bee Zed Mini
+Structured Light Projection
+5
+• Many structured light techniques exist that 
+follow the two objectives: 
+• Determine projector-camera 
+correspondences with as few images as 
+possible 
+• Be robust against surface modulation and 
+noise 
+• Codes include: 
+• Binary codes, such as the Gray code (most 
+common): <100 images, quite robust 
+• Intensity codes that apply cosine patterns 
+and phase shifts: 6 images, but are not 
+robust against strong absorptions 
+• Color coding: <3 images, but very fragile 
+(does not work on coloured surfaces)
+Camera C Projector P
+Optical Time-of-Flight (ToF) 
+6
+• Use low-power IR illumination for 
+pulsed illumination 
+• Can be switched on/off with <1ns 
+• Generates a “light wall” that is 
+reﬂected back by objects
+Illuminator ToF Sensor
+• General idea: 
+• Compute depth by round-trip 
+estimation of a light wave emitted 
+and its reﬂection back to the 
+sensor 
+• D = C ⋅ Δt/2
+7
+Depth from Mono / Depth Estimation using ML
+• Convolutional neural networks (CNNs) 
+have been applied to monocular depth 
+estimation 
+• Common architectures include U-Net, 
+ResNet, and DenseNet 
+• During training:  
+• Network is given pairs of images and 
+their corresponding ground-truth depth 
+maps 
+• Minimize the difference between 
+predicted depth and ground truth depth
+https://github.com/yuhsuanyeh/BiFuse
+Today: 
+Processing of Depth Maps, Relative Pose 
+and Multi-view Stereo
+Overview
+9
+• Range Scanning 
+• Passive: 
+• Stereo or Multi-Camera 
+• Active: 
+• Structured Light Projection 
+• Optical Time-of-Flight 
+• Direct ToF 
+• Indirect ToF 
+• Registration of Depth Maps 
+• Processing Depth Maps
+
+Registration of Depth Maps
+
+=== VisualComputingL13Recap.pdf pages=32
+Visual Computing I:  
+Interactive Computer Graphics and Vision
+3D Reconstruction/Recap Lecture Stefanie Zollmann and Tobias Langlotz 
+
+Colmap Workflow
+2
+https://colmap.github.io/tutorial.html
+Absolute Pose
+Multi-View Stereo Pipeline
+4
+• Identify best matching pair 
+• Two-view stereo for relative pose 
+• Reconstruct 3D points 
+• Minimise reprojection error 
+• While still images to add 
+• Select next best view 
+• Determine absolute pose 
+• Reconstruct more 3D points 
+• Minimise reprojection error
+Absolute Pose Problem
+5
+• We have a new image taken with a calibrated 
+camera 
+• We have already established a coordinate frame 
+• We have 3D points and their corresponding 2D 
+points from the ﬁrst image pair 
+• We found matches from new image to ﬁrst image 
+pair 
+• Need to ﬁnd pose (rotation and translation) of the 
+camera when the new image was taken
+𝑍
+𝑋
+𝑌
+Perspective- -Point Pose (PnP)𝑛
+6
+• Pose from 2D-3D matches 
+• Have six unknowns ( ) 
+• Each 2D-3D match  gives 
+ 
+• How many matches? 
+• Each point gives 3 equations 
+• Adds 1 unknown ( ) 
+•  unknowns,  equations, 
+ 
+R,  𝐭
+𝐮𝑖 ↔ 𝐱𝑖
+𝑘i𝐮i = K[R   𝐭]𝐱𝑖
+𝑘𝑖
+6 + 𝑛 3𝑛
+n ≥ 3
+𝑍
+𝑋
+𝑌𝑌
+𝐁
+𝐂
+𝐀
+Perspective-3-Point Pose (P3P)
+7
+• Input: 
+• The 3D coordinates of three known points in 
+the world (e.g., landmarks) 
+• The 2D coordinates of their projections in the 
+camera image 
+• The camera’s intrinsic calibration (focal length, 
+principal point, etc.) 
+• Output: 
+• The rotation (camera orientation) 
+• The translation (camera position) 
+𝑍
+𝑋
+𝑌
+𝐀 𝐁
+𝐂
+𝐚 𝐛
+𝐜
+𝐏
+𝑌
+𝐁
+𝐂
+Perspective-3-Point Pose (P3P)
+8
+• We have three 2D-3D matches 
+• Call the 3D points , , and  
+• The matching image points are , ,  
+• The (unknown) camera location is  
+• Overview of solution 
+• Use angles between , , and  
+• Find the distances , ,   
+• This gives us equations for 
+𝐀 𝐁 𝐂
+𝐚 𝐛 𝐜
+𝐏
+→𝐏𝐀 →𝐏𝐁 →𝐏𝐂
+→𝐏𝐀 →𝐏𝐁 →𝐏𝐂
+𝐏
+𝑍
+𝑋
+𝑌
+𝐀 𝐁
+𝐂
+𝐚 𝐛
+𝐜
+𝐏
+𝑌
+𝐁
+𝐂
+Perspective-3-Point Pose (P3P)
+9
+• Deﬁne the angles between rays
+ 
+• Using dot products: 
+ 
+𝛼 = ∠𝐵𝑃𝐶   𝛽 = ∠𝐴𝑃𝐶  𝛾 = ∠𝐴𝑃𝐵
+cos𝛼 = 𝐛 ⋅ 𝐜
+𝐛 𝐜
+  
+cos𝛽 = 𝐚 ⋅ 𝐜
+𝐚 𝐜    cos𝛾 = 𝐚 ⋅ 𝒃
+𝐚 𝐛
+ 
+𝑍
+𝑋
+𝑌
+𝐀 𝐁
+𝐂
+𝐚 𝐛
+𝐜
+𝐏
+𝛼β
+𝛾
+Perspective-3-Point Pose (P3P)
+10
+• The law of cosines tells us that 
+ 
+ 
+ 
+• Solve for 
+  and 
+→𝐀𝐁
+2
+= →𝐏𝐀
+2
++ →𝐏𝐁
+2
+− 2 →𝐏𝐀 →𝐏𝐁 cos𝛾
+→𝐀𝐂
+2
+= →𝐏𝐀
+2
++ →𝐏𝐂
+2
+− 2 →𝐏𝐀 →𝐏𝐂 cos𝛽
+→𝐁𝐂
+2
+= →𝐏𝐁
+2
++ →𝐏𝐂
+2
+− 2 →𝐏𝐁 →𝐏𝐂 cos𝛼
+→𝐏𝐀 , →𝐏𝐁 , →𝐏𝐂
+𝑍
+𝑋
+𝑌
+𝐀 𝐁
+𝐂
+𝐚 𝐛
+𝐜
+𝐏
+𝛼β
+𝛾
+
+=== VisualComputingGraphicsIntro.pdf pages=49
+Visual Computing I:  
+Interactive Computer Graphics and Vision
+Computer Graphics Introduction Stefanie Zollmann and Tobias Langlotz 
+
+Quiz
+What to do with all this data?
+3
+Point Clouds 3D Mesh data
+4
+Why do we need real-time graphics?
+Games
+ Augmented 
+Reality
+ Virtual Reality
+ Visualization
+Real-Time Graphics
+6
+Real-Time Graphics
+Demands: 
+• Full HD at 60 Hz: 1920 × 1080 × 60 
+Hz = 124 Mpx/s  
+• Stereo x2 (computing two images) 
+• In real-time 
+• Capacities for additional computations 
+How? 
+• Hardware implementation: graphics 
+processing unit GPU
+By Shawn Knight - http://www.techspot.com/news/65328-amd-radeon-rx-480-benchmarks-bare-pcb-
+photos.html, CC BY-SA 4.0, https://commons.wikimedia.org/w/index.php?curid=54979727
+
+Real-Time Graphics
+Based on rasterisation of graphic 
+primitives:
+• Points 
+• Lines 
+• Triangles 
+• Implemented in hardware (GPU)
+7
+Points
+ Lines
+ Triangles
+GPUs do Rasterisation
+• Rasterisation 
+• Computing for each triangle 
+which pixel it covers  
+• Triangle centric approach 
+• Rasteriser processes one triangle 
+at a time
+8
+GPU
+ Graphics Pipeline
+Primitives
+For each triangle
+For each pixel
+Does triangle cover pixel 
+Keep closest hit
+
+Mapping Vision Concepts to Graphics
+9
+Vision              Graphics          
+[R|t] View matrix
+K Projection matrix 
+Triangulated points Vertex buffer     
+Reprojection        Rasterization     
+Image               Framebuffer       
+The math and data structures are equivalent -> only the implementation changes. 
+Graphics Pipeline
+• Input 
+• Geometric model 
+• Vertices, normals, texture coordinates 
+• Lighting/shading model 
+• Light positions 
+• View point and virtual camera 
+configuration 
+• Output 
+• Colour (and depth) per pixel on a screen
+10
+https://commons.wikimedia.org/wiki/File:Utah_teapot_simple.png
+
+=== VisualComputingL14GraphicsIntro.pdf pages=72
+Visual Computing I:  
+Interactive Computer Graphics and Vision
+Computer Graphics Introduction Stefanie Zollmann and Tobias Langlotz 
+
+3D Geometry
+
+Stereo Vision/ Epipolar Geometry 
+
+Stereo Vision: Fundamental Matrix
+
+Depth Sensing
+
+Multiview Geometry
+
+Quiz
+Computer Graphics
+What to do with all this data?
+9
+Point Clouds 3D Mesh data
+3-Min Discussion: 
+Why not just keep doing what we did so far and use 
+image processing tools to render our 3D models?
+What challenges would you expect?
+
+

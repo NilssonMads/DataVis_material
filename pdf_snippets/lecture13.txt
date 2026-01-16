@@ -1,0 +1,162 @@
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+VISUAL ANALYTICS HANS-JÖRG SCHULZ
+AU
+VISUAL ANALYTICS
+Hans-Jörg SchulzVISUAL ANALYTICS HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+1. INTRODUCTION 3. BASIC CHART TYPES
+Basics
+      Visualization
+Building Blocks
+& Processes
+     Visualization
+Techniques
+Visualization
+Applications
+2. VISUAL ENCODING
+4. INTERACTION
+6. DATA PREPROCESSING
+5. VISUALIZATION DESIGN
+7. RECAP 1st Half
+8. MULTIVARIATE DATAVIS
+10. GEOSPATIAL DATAVIS
+9. TEMPORAL DATAVIS
+11. GRAPH DATAVIS
+12. 3D DATAVIS 13. VISUAL ANALYTICS
+14. RECAP 2nd HalfVISUAL ANALYTICS HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+video source: https://youtu.be/5uGRGqCFryg
+VISUAL ANALYTICS HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+VISUAL ANALYTICS
+​“Visual analytics combines automated analysis techniques with interactive
+visualizations for an effective understanding, reasoning and decision
+making on the basis of very large and complex datasets.”
+​Keim et al. 2008
+[ https://doi.org/10.1007/978-3-540-70956-5_7 ]
+[ https://doi.org/10.2312/14803 ]
+VISUAL ANALYTICS HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+WHY TALK ABOUT VISUAL ANALYTICS?
+VA comes with a series of challenges in its own right:
+• Computational analysis is often a long-running, time consuming process,
+while visual data analysis is fast-paced and interactive.
+• Visualization must not only be expressive of the underlying data, but the
+underlying computational processes
+• The aim of VA is
+• ill-defined: “generate insight in the data”
+• subjective: “confirm the expected and discover the unexpected”
+• elusive / iterative: the moment you reach an analysis goal, it shifts…
+• constrained: results must be ready to base timely decisions on themVISUAL ANALYTICS HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+[ https://doi.org/10.1109/VDS48975.2019.8973381
+]VISUAL ANALYTICS HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+https://doi.org/10.1109/TVCG.2013.167VISUAL ANALYTICS HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+https://doi.org/10.1109/TVCG.2017.2744419DEPARTMENT OF COMPUTER SCIENCE
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+VISUAL ANALYTICS HANS-JÖRG SCHULZAARHUS
+UNIVERSITY
+AU
+THEORETICAL BACKGROUNDVISUAL ANALYTICS HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+KEIM’S ABILITY MATRIX
+Performance of a Computer
+Performance of a Human
+Data Storage
+Numerical
+Calculations
+Searching/Finding
+Logic
+Creativity
+Cognition
+Common
+Knowledge
+Planning
+Diagnosis
+Prediction
+adapted from Daniel Keim, Uni. Konstanz
+Let the Computer do it!
+Let the Human do it!
+[ https://bib.dbvis.de/uploadedFiles/233.pdf ]
+VISUAL ANALYTICS HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+YET ANOTHER VA DEFINITION…
+​“Visual analytics combines automated analysis techniques with interactive
+visualizations for an effective understanding, reasoning and decision
+making on the basis of very large and complex datasets.”
+​Keim et al. 2008
+​“Visual analytics combines the strengths of both worlds: On the one hand
+they take advantage of intelligent algorithms and vast computational
+power of modern computers and on the other hand they integrate human
+background knowledge and intuition to find a good solution.”
+​Keim et al. 2009
+[ https://doi.org/10.1007/978-3-540-70956-5_7 ]
+[ https://doi.org/10.1145/1809400.1809403 ]
+VISUAL ANALYTICS HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+INFORMATION FORAGING
+• We are “Informavores”. (see George Miller: “Informavores” in F. Machlup & U. Mansfield
+(Eds.), The Study of Information: Interdisciplinary Messages (pp. 111-113) Wiley 1983)
+• We “hunt” for information in similar ways as predators hunt for prey. (see Pirolli+Card, 1999)
+                                       https://doi.org/10.1037/0033-295X.106.4.643
+image source: Catherine Tiphanie, http://www.catherinetiphanie.co.uk/ergonomics.htmlVISUAL ANALYTICS HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+INFORMATION FORAGING
+              Image source:
+https://www.nngroup.com/articles/information-foraging/VISUAL ANALYTICS HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+SENSEMAKING
+Sensemaking is an active two-way process of fitting data into a frame (mental model) and fitting a frame
+around the data. Neither data nor frame comes first; data evoke frames and frames select a

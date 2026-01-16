@@ -1,0 +1,381 @@
+=== VisualComputingL08_3DGeometry.pdf pages=64
+Visual Computing I:  
+Interactive Computer Graphics and Vision
+3D Geometry and Cameras Stefanie Zollmann and Tobias Langlotz 
+
+Last time.. 
+3
+Homographies and Image Stitching
+• To stitch an image: 
+• Need to warp images to align 
+• This warping is a homography 
+• How to ﬁnd the homography? 
+• If a feature at (u,v) in one image  matches to  (u’,v’) in the other, then
+[
+𝑢′ 
+𝑣′ 
+1 ] ≡
+h11 h12 h13
+h21 h22 h23
+h31 h32 h33
+[
+𝑢
+𝑣
+1]
+
+4
+Do we still have a problem?
+• For each point we get constraints of the form: 
+ 
+• s and s are pixel values – on the order of 100 or 1000 
+• So errors in  and  get multiplied by 1 
+• Errors in  and  get multiplied by 10,000 to 1,000,000 
+• This makes the solution very unstable 
+[
+0 0 0 −𝑢𝑖 −𝑣𝑖 −1 𝑢𝑖𝑣′ 𝑖 𝑣𝑖𝑣′ 𝑖 𝑣′ 𝑖
+𝑢𝑖 𝑣𝑖 1 0 0 0 −𝑢𝑖𝑢′ 𝑖 −𝑣𝑖𝑢′ 𝑖 −𝑢′ 𝑖]
+h1
+h2
+⋮
+h9
+= [
+0
+0]
+𝑢 𝑣
+h3 h6
+h7 h8
+5
+Algorithm: Normalized DLT
+Input:  correspondences 
+Output: Homography, , such that 
+1. Normalisation: Find  and  to centre  and 
+ on the origin with average length 
+2. Direct Linear Transform: 
+1. Form the matrix  from  and 
+2. Compute the SVD of , and find the smallest 
+eigenvector, 
+3. Reshape  to give the  homography matrix 
+3. Denormalisation: Final solution is 
+𝑛 ≥ 4 𝐮𝑖 ↔ 𝐮′ 𝑖
+H 𝐮′ 𝑖 = H𝐮𝑖
+T T′ 
+~𝐮𝑖 = T𝐮𝑖~𝐮′ 
+𝑖 = T′ 𝐮′ 𝑖 2
+A ~𝐮𝑖 ~𝐮′ 
+𝑖
+A~𝐡~𝐡 3 × 3 ~H
+H = T′ −1~HT
+6
+RANSAC for General Model Fitting
+• We need: 
+• A set of n points or items,  
+• To be able to ﬁt a model, , to  points 
+• To ﬁnd the distance,  
+• RANSAC has parameters: 
+• A threshold for acceptance 
+• A number of trials (see later) 
+•RANSAC then proceeds as for the line fitting, except: 
+•We select  items at random 
+•We fit our model, , to them
+𝑝𝑖
+𝑀 𝑘 ≪  𝑛
+𝑑(𝑀,  𝑝𝑖)
+𝑘
+𝑀
+This time: 3D Geometry/Cameras 
+8
+Three Dimensions
+• We move from 2D to 3D 
+• Many ideas the same: 
+• Homogeneous co-ordinates 
+• Scaling and translation 
+• Some things get tricky 
+• Choice of left- or right- handed co-ordinates 
+• Rotations get complicated 
+• Projection from 3D to 2D
+
+9
+Left & Right-Handed Coordinates
+Thumb is axis 
+Forefinger is axis 
+Middle finger is axis
+Left handed Right-Handed
+
+STEFANIE  ZOLLMANN 3D  Geometry 10
+LEFT & RIGHT -HANDED CO-ORDINATES
+
+
+=== VisualComputingL09_Calibration_Stereo.pdf pages=49
+Visual Computing I:  
+Interactive Computer Graphics and Vision
+Camera Calibration and Stereo Vision Stefanie Zollmann and Tobias Langlotz 
+
+Last time.. 
+3
+Three Dimensions
+• We moved from 2D to 3D 
+• Many ideas the same: 
+• Homogeneous co-ordinates 
+• Scaling and translation 
+• Some things get tricky 
+• Choice of left- or right-handed coordinates 
+• Rotations get complicated 
+• Projection from 3D to 2D
+
+4
+Left & Right-Handed Coordinates
+Thumb is axis 
+Forefinger is axis 
+Middle finger is axis
+Left handed Right-Handed
+
+Separation slide
+ 𝑅𝑍 =
+cos(𝜃) −sin(𝜃)
+sin(𝜃) cos(𝜃)
+0 0
+0 0
+0 0
+0 0
+1 0
+0 1
+https://szollmann.github.io/LectureExamples/tutorials/transformations/Transformations3DTeapot/
+6
+Quiz: Rotation in 3D
+
+7
+Quiz: Rotation in 3D
+
+8
+Quiz: Rotation in 3D
+
+9
+Quiz: Rotation in 3D
+
+10
+The Pinhole Camera Model and Projective Geometry
+Z
+f
+U
+X
+(x, z)
+(u, -f)
+• Removing the sign change
+f
+(u, f)
+• We can put the image plane 
+in front of the pinhole 
+• Removes the sign 
+change 
+• Not practical for real 
+cameras 
+• The maths works out just 
+ﬁne 
+[
+𝑢
+𝑣
+1] ≡
+𝑓
+0
+0
+0
+𝑓
+0
+0
+0
+1
+0
+0
+0
+𝑥
+𝑦
+𝑧
+1
+
+=== VisualComputingL10FundamentalMatrixDenseStereo.pdf pages=61
+Visual Computing I:  
+Interactive Computer Graphics and Vision
+Stereo and Dense Depth Stefanie Zollmann and Tobias Langlotz 
+
+Last time.. 
+3
+Camera Calibration
+ 
+•  is a 2D image 
+point 
+•  is a  calibration matrix 
+•  is a  rotation matrix 
+•  is a 3D translation vector 
+•  is a 3D point 
+• Camera calibration: determine 
+𝐮 ≡ K[R 𝐭]𝐱
+𝐮 = [𝑢 𝑣 1]𝑇
+K 3 × 3
+R 3 × 3
+𝐭
+𝐱 = [𝑥 𝑦 𝑧 1]
+𝑇
+K
+
+4
+Calibration in OpenCV
+• Calibration targets: 
+• Input is 3D-2D matches 
+• Want easy-to ﬁnd 2D points 
+• Need known 3D co-ordinates 
+• Planar targets common 
+• Easy to make with a printer 
+• Chess/Checkerboards 
+• Grids of dots or lines 
+• Is a 2D pattern enough?
+
+5
+
+How does a calibration look like? 
+7
+Do we need to calibrate our cameras for every app?
+8
+void Update() 
+    { 
+        // 1. Try to get the camera intrinsics 
+        if (cameraManager.TryGetIntrinsics(out ARCameraIntrinsics intrinsics)) 
+        { 
+            // 2. The 'intrinsics' struct now holds the calibration data 
+            // Access focal length (fx, fy) 
+            Vector2 focalLength = intrinsics.focalLength; 
+            // Access principal point (cx, cy) 
+            Vector2 principalPoint = intrinsics.principalPoint; 
+            // Access the image resolution this corresponds to 
+            Vector2Int resolution = intrinsics.resolution; 
+            // You now have all the components of the K matrix 
+            // print($"Focal Length: {focalLength}, Principal Point: {principalPoint}"); 
+             
+            // You can construct the K matrix yourself if needed: 
+            // Matrix4x4 K = Matrix4x4.identity; 
+            // K[0, 0] = focalLength.x; 
+            // K[1, 1] = focalLength.y; 
+            // K[0, 2] = principalPoint.x; 
+            // K[1, 2] = principalPoint.y; 
+        } 
+    } 
+Accessing Intrinsics using ARCore
+Simple Stereo 
+A Simple Stereo System
+10
+• Assume a set of 2 pinhole cameras 
+ 
+• Simplify for now:  
+• Camera 1 (C1): ,  
+• No rotation, looks along  
+• Camera 2 (C2): shifted along  
+𝐮 = K[R 𝐭]𝐱
+K = I
+R = I 𝐭 = 𝟎
+𝑍
+𝑋
+R = I,  𝒕 = [
+𝑏
+0
+0] 𝑋
+𝑍
+𝑌
+𝑏
+𝑈1
+𝑉1
+𝑉2
+𝑈2
+C1
+C2
+
+=== Visual Computing L11 SensingDepth.pdf pages=101
+Visual Computing I: 
+Interactive Computer Graphics and Vision
+Practical Depth Sensing and Working with Range Data 
+Stefanie Zollmann and Tobias Langlotz 
+
+Last time.. 
+The Fundamental Matrix
+3
+• One way to express  is 
+ 
+• Here 
+•  and  are the calibration matrices of the two cameras 
+•  and  are the rotation and translation between them 
+•  is the matrix form of the cross product with : 
+F
+F = K−𝑇
+2 [𝐭]×RK−1
+1
+K1 K2
+R 𝐭
+[𝐭]× 𝐭
+[t]× =
+0 −tz ty
+tz 0 −tx
+−ty tx 0
+Notes:
+p1 = K1[I | 0]x
+p2 = K2[R| t]x
+The Essential Matrix
+4
+• For calibrated cameras 
+• We can factor out  and  in   
+• This gives us the essential matrix 
+ 
+•  has only ﬁve DoF: 
+• 3 for 3D rotation 
+• 3 for 3D translation 
+• Less 1 for unknown scale
+K1 K2 F = K−𝑇
+2 [𝐭]×RK−1
+1
+E = K𝑇
+2 FK1 = [𝐭]×R
+E
+
+Stereo Rectification
+5
+I1 I2
+I’1 I’2
+X
+Today: 
+Practical Depth Sensing and Range Data 
+Overview
+7
+• Range Scanning 
+• Passive: 
+• Stereo or Multi-Camera 
+• Active: 
+• Structured Light Projection 
+• Optical Time-of-Flight 
+• Direct ToF 
+• Indirect ToF 
+• Registration of Depth Maps 
+• Processing Depth Maps
+
+Range Scanning
+8
+• Range sensors: 
+• Passive: >=2 cameras 
+(stereovision) 
+• Active: >=1 cameras + >=1 
+projectors (structured light) 
+• Result is depth information given as: 
+• Range image / depth map store 
+depth at pixel positions from a 
+speciﬁc view (RGBD image) 
+• A point cloud is a 3D dataset of 
+discrete (X,Y,Z) surface points 
+ Depth	Map Point	cloud
+Passive Range Scanning  
+10
+• Two or more cameras 
+• Stereo camera 
+• Two cameras 
+• One camera takes several photos from 
+different perspectives 
+• Multiple cameras 
+• Which one is the easiest and why?
+Passive Range Scanning
+Camera	C1 Camera	C2Camera	C1
+

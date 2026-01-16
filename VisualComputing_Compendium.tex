@@ -1,0 +1,1155 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{float}
+
+\geometry{margin=2.5cm}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    pdftitle={Visual Computing Compendium},
+    pdfpagemode=FullScreen,
+}
+
+\lstset{
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    frame=single,
+    backgroundcolor=\color{gray!10},
+    keywordstyle=\color{blue},
+    commentstyle=\color{green!60!black},
+    stringstyle=\color{red}
+}
+
+\title{\textbf{Visual Computing I:\\Interactive Computer Graphics and Vision}\\Comprehensive Lecture Compendium}
+\author{Based on Lectures by Stefanie Zollmann \& Tobias Langlotz\\Aarhus University}
+\date{Academic Year 2025}
+
+\begin{document}
+
+\maketitle
+\newpage
+
+\tableofcontents
+\newpage
+
+%=======================================================================
+\section{Introduction to Visual Computing}
+%=======================================================================
+
+\subsection{What is Visual Computing?}
+
+Visual computing integrates two fundamental areas:
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Computer Graphics}: Creating and rendering synthetic images from mathematical models
+    \item \textbf{Computer Vision}: Extracting information and understanding from real-world images
+\end{itemize}
+
+\textbf{Key Fact:} Approximately 30\% of the human brain is dedicated to visual processing, making visual computing one of the most important interfaces between humans and machines.
+
+\subsection{Historical Milestones}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{1963}: Ivan Sutherland's Sketchpad — first interactive computer graphics system
+    \item \textbf{Computer Graphics Icons}: Stanford Bunny, Cornell Box, Utah Teapot
+    \item \textbf{Computer Vision}: Scene reconstruction (Larry Roberts' "Machine Perception of Three-Dimensional Solids")
+\end{itemize}
+
+\subsection{Modern Applications}
+
+\begin{description}
+    \item[Movies] Avatar and motion capture (Andy Serkis) — combining CV for capture and CG for rendering
+    \item[Games] Real-time rendering engines (Unreal Engine)
+    \item[Mixed Reality] AR/VR systems combining vision and graphics
+    \item[3D Reconstruction] SLAM systems like ORB-SLAM
+\end{description}
+
+%=======================================================================
+\section{Digital Images and Colour Representation}
+%=======================================================================
+
+\subsection{Image Representation}
+
+A digital image is a \textbf{2D array (raster) of pixels}, where each pixel stores:
+\begin{itemize}
+    \item A single value (grayscale intensity)
+    \item Multiple values (RGB colour, transparency/alpha)
+\end{itemize}
+
+\textbf{Basic structure in code:}
+\begin{lstlisting}[language=Python]
+# Create a 2D array 
+image2D = create_array(height, width)
+
+# Fill with grayscale values
+for y from 0 to height-1:
+    for x from 0 to width-1:
+        image2D[y][x] = 125  # grayscale value
+
+# Access pixel at (row=1, col=2)
+image2D[1][2] = 0
+\end{lstlisting}
+
+\subsection{Colour Models}
+
+\subsubsection{RGB Colour Space}
+\begin{itemize}
+    \item \textbf{Additive model}: Combines Red, Green, Blue channels
+    \item Common in displays and digital cameras
+    \item Range: typically [0, 255] for 8-bit per channel
+    \item \textbf{Use case}: Direct hardware representation
+\end{itemize}
+
+\subsubsection{HSV/HSL Colour Space}
+\begin{itemize}
+    \item \textbf{Hue}: Colour type (0-360°)
+    \item \textbf{Saturation}: Colour intensity
+    \item \textbf{Value/Lightness}: Brightness
+    \item \textbf{Use case}: Colour detection, segmentation (easier to isolate specific colours like red balloons)
+\end{itemize}
+
+\subsubsection{Grayscale}
+Single intensity value per pixel, often computed as:
+\[ \text{Gray} = 0.299R + 0.587G + 0.114B \]
+(Weighted average matching human luminance perception)
+
+%=======================================================================
+\section{2D Transformations}
+%=======================================================================
+
+\subsection{2D Geometry Primitives}
+
+\begin{description}
+    \item[Point] A 2D location $(u, v)$
+    \item[Line] Defined by two points $(u_0, v_0)$ and $(u_1, v_1)$
+    \item[Polyline] Sequence of $k+1$ points: $(u_0, v_0), (u_1, v_1), \ldots, (u_k, v_k)$
+    \item[Polygon] A closed polyline where $(u_0, v_0) = (u_k, v_k)$
+\end{description}
+
+\subsection{Points as Vectors}
+
+Points can be represented as column vectors:
+\[ (u, v) \rightarrow \begin{bmatrix} u \\ v \end{bmatrix} = [u \quad v]^T \]
+
+This vector represents:
+\begin{itemize}
+    \item The point's location
+    \item A direction (step of $u$ units along one axis, $v$ along the other)
+    \item The endpoint when stepping from the origin
+\end{itemize}
+
+\subsection{Homogeneous Coordinates}
+
+To enable linear transformations for translation, we use \textbf{homogeneous coordinates}:
+\[ (u, v) \rightarrow \begin{bmatrix} u \\ v \\ 1 \end{bmatrix} \]
+
+Key operations become matrix multiplications.
+
+\subsection{2D Transformation Matrices}
+
+\subsubsection{Translation}
+\[ T(t_x, t_y) = \begin{bmatrix} 1 & 0 & t_x \\ 0 & 1 & t_y \\ 0 & 0 & 1 \end{bmatrix} \]
+
+\subsubsection{Scaling}
+\[ S(s_x, s_y) = \begin{bmatrix} s_x & 0 & 0 \\ 0 & s_y & 0 \\ 0 & 0 & 1 \end{bmatrix} \]
+
+\subsubsection{Rotation (counter-clockwise by $\theta$)}
+\[ R(\theta) = \begin{bmatrix} \cos\theta & -\sin\theta & 0 \\ \sin\theta & \cos\theta & 0 \\ 0 & 0 & 1 \end{bmatrix} \]
+
+\subsubsection{Composition}
+Transformations are applied right-to-left (matrix multiplication order):
+\[ \mathbf{p}' = T \cdot R \cdot S \cdot \mathbf{p} \]
+
+%=======================================================================
+\section{Image Processing and Manipulation}
+%=======================================================================
+
+\subsection{Point Operations}
+
+Operations that modify each pixel independently based only on its own value.
+
+\subsubsection{Brightness and Contrast Adjustment}
+\[ I'(x,y) = \alpha \cdot I(x,y) + \beta \]
+\begin{itemize}
+    \item $\alpha > 1$: increase contrast; $\alpha < 1$: decrease contrast
+    \item $\beta > 0$: increase brightness; $\beta < 0$: decrease brightness
+\end{itemize}
+
+\subsubsection{Thresholding}
+\[ I'(x,y) = \begin{cases} 255 & \text{if } I(x,y) \geq T \\ 0 & \text{otherwise} \end{cases} \]
+
+\subsection{Neighbourhood Operations (Filtering)}
+
+\subsubsection{Convolution}
+\[ I'(x,y) = \sum_{i,j} K(i,j) \cdot I(x+i, y+j) \]
+where $K$ is the \textbf{kernel/filter}.
+
+\subsubsection{Common Filters}
+
+\textbf{Box/Mean Filter (Smoothing):}
+\[ K_{\text{box}} = \frac{1}{9} \begin{bmatrix} 1 & 1 & 1 \\ 1 & 1 & 1 \\ 1 & 1 & 1 \end{bmatrix} \]
+
+\textbf{Gaussian Filter (Smoothing with weighting):}
+\[ G(x,y) = \frac{1}{2\pi\sigma^2} e^{-\frac{x^2+y^2}{2\sigma^2}} \]
+
+\textbf{Sobel Filter (Edge detection):}
+\[ G_x = \begin{bmatrix} -1 & 0 & 1 \\ -2 & 0 & 2 \\ -1 & 0 & 1 \end{bmatrix}, \quad G_y = \begin{bmatrix} -1 & -2 & -1 \\ 0 & 0 & 0 \\ 1 & 2 & 1 \end{bmatrix} \]
+
+Edge magnitude: $\sqrt{G_x^2 + G_y^2}$
+
+\textbf{Laplacian (Second derivative):}
+\[ K_{\text{Laplacian}} = \begin{bmatrix} 0 & 1 & 0 \\ 1 & -4 & 1 \\ 0 & 1 & 0 \end{bmatrix} \]
+
+%=======================================================================
+\section{Feature Detection and Description}
+%=======================================================================
+
+\subsection{What are Features?}
+
+\textbf{Features} are distinctive points or regions in an image that can be reliably detected and matched across different views.
+
+\textbf{Properties of good features:}
+\begin{itemize}
+    \item \textbf{Repeatable}: Detectable in different images of the same scene
+    \item \textbf{Distinctive}: Each feature should be unique
+    \item \textbf{Local}: Robust to occlusion and clutter
+    \item \textbf{Efficient}: Fast to compute
+\end{itemize}
+
+\subsection{Corner Detection}
+
+\subsubsection{Harris Corner Detector}
+
+Idea: A corner has large intensity gradients in multiple directions.
+
+\textbf{Algorithm:}
+\begin{enumerate}
+    \item Compute image gradients $I_x$ and $I_y$
+    \item Construct the structure tensor (Harris matrix):
+    \[ M = \begin{bmatrix} \sum I_x^2 & \sum I_x I_y \\ \sum I_x I_y & \sum I_y^2 \end{bmatrix} \]
+    (Summed over a local window)
+    \item Compute corner response:
+    \[ R = \det(M) - k \cdot \text{trace}(M)^2 = \lambda_1 \lambda_2 - k(\lambda_1 + \lambda_2)^2 \]
+    where $k \approx 0.04$--$0.06$
+    \item Threshold $R$ to find corners
+\end{enumerate}
+
+\subsection{Feature Descriptors}
+
+\subsubsection{SIFT (Scale-Invariant Feature Transform)}
+
+\textbf{Properties:}
+\begin{itemize}
+    \item Invariant to scale, rotation, and illumination changes
+    \item Robust to affine distortion
+\end{itemize}
+
+\textbf{Steps:}
+\begin{enumerate}
+    \item \textbf{Scale-space extrema detection}: Find keypoints across scales using DoG (Difference of Gaussians)
+    \item \textbf{Keypoint localization}: Refine location and eliminate low-contrast points
+    \item \textbf{Orientation assignment}: Compute dominant orientation from gradient histogram
+    \item \textbf{Descriptor}: 128-dimensional vector from local gradient histograms (4×4 grid, 8 orientations)
+\end{enumerate}
+
+\subsubsection{ORB (Oriented FAST and Rotated BRIEF)}
+
+\textbf{Faster alternative to SIFT:}
+\begin{itemize}
+    \item FAST corner detection
+    \item BRIEF descriptor with rotation normalization
+    \item Binary descriptor (efficient matching with Hamming distance)
+\end{itemize}
+
+\subsection{Feature Matching}
+
+\textbf{Nearest Neighbour Matching:}
+\begin{enumerate}
+    \item For each feature in image 1, find closest feature in image 2 (e.g., Euclidean distance for SIFT, Hamming for ORB)
+    \item \textbf{Lowe's ratio test}: Accept match if
+    \[ \frac{d_{\text{nearest}}}{d_{\text{second nearest}}} < 0.7-0.8 \]
+\end{enumerate}
+
+%=======================================================================
+\section{Homographies and Image Stitching}
+%=======================================================================
+
+\subsection{Planar Homography}
+
+A \textbf{homography} $H$ is a $3 \times 3$ matrix mapping points from one plane to another:
+\[ \begin{bmatrix} u' \\ v' \\ 1 \end{bmatrix} \equiv H \begin{bmatrix} u \\ v \\ 1 \end{bmatrix} = \begin{bmatrix} h_{11} & h_{12} & h_{13} \\ h_{21} & h_{22} & h_{23} \\ h_{31} & h_{32} & h_{33} \end{bmatrix} \begin{bmatrix} u \\ v \\ 1 \end{bmatrix} \]
+
+$\equiv$ denotes equality up to scale (homogeneous coordinates).
+
+\subsection{Computing Homography from Correspondences}
+
+\textbf{Direct Linear Transform (DLT):}
+
+Given $n \geq 4$ point correspondences $(u_i, v_i) \leftrightarrow (u'_i, v'_i)$:
+
+\begin{enumerate}
+    \item Each correspondence gives 2 equations (eliminate scale factor)
+    \item Form matrix $A$ (size $2n \times 9$):
+    \[ \begin{bmatrix} 0 & 0 & 0 & -u_i & -v_i & -1 & u_i v'_i & v_i v'_i & v'_i \\ u_i & v_i & 1 & 0 & 0 & 0 & -u_i u'_i & -v_i u'_i & -u'_i \end{bmatrix} \begin{bmatrix} h_1 \\ \vdots \\ h_9 \end{bmatrix} = \mathbf{0} \]
+    \item Solve $A\mathbf{h} = 0$ via SVD (smallest singular value's eigenvector)
+    \item Reshape $\mathbf{h}$ to $3 \times 3$ matrix $H$
+\end{enumerate}
+
+\subsection{Normalized DLT}
+
+\textbf{Problem:} Pixel coordinates (hundreds/thousands) cause numerical instability.
+
+\textbf{Solution:} Normalize points before computing $H$:
+\begin{enumerate}
+    \item Find transformations $T$ and $T'$ to center points and scale to unit variance
+    \item Compute $\tilde{H}$ on normalized points $\tilde{\mathbf{u}}_i = T\mathbf{u}_i$
+    \item Denormalize: $H = T'^{-1} \tilde{H} T$
+\end{enumerate}
+
+\subsection{RANSAC for Robust Estimation}
+
+\textbf{Problem:} Outlier matches destroy homography estimation.
+
+\textbf{RANSAC (Random Sample Consensus):}
+\begin{enumerate}
+    \item Randomly select minimal subset (4 points)
+    \item Fit model (compute $H$)
+    \item Count inliers (points with reprojection error $< \epsilon$)
+    \item Repeat $N$ iterations, keep best model
+    \item Optionally refit using all inliers
+\end{enumerate}
+
+Number of iterations:
+\[ N = \frac{\log(1 - p)}{\log(1 - (1-\epsilon)^s)} \]
+where $p$ = desired confidence, $\epsilon$ = outlier ratio, $s$ = sample size.
+
+\subsection{Image Stitching Pipeline}
+
+\begin{enumerate}
+    \item \textbf{Feature detection} in all images
+    \item \textbf{Feature matching} between overlapping pairs
+    \item \textbf{Compute homographies} (RANSAC + normalized DLT)
+    \item \textbf{Warp images} to common coordinate frame
+    \item \textbf{Blend seams} (alpha blending, multi-band blending)
+\end{enumerate}
+
+%=======================================================================
+\section{3D Geometry and Cameras}
+%=======================================================================
+
+\subsection{3D Coordinate Systems}
+
+\subsubsection{Left-Handed vs Right-Handed}
+\begin{itemize}
+    \item \textbf{Right-handed} (common in mathematics, OpenGL): thumb = X, forefinger = Y, middle = Z
+    \item \textbf{Left-handed} (common in DirectX): same but mirrored
+\end{itemize}
+
+\textbf{Convention matters for:}
+\begin{itemize}
+    \item Cross product direction
+    \item Rotation directions
+    \item Normal vector orientation
+\end{itemize}
+
+\subsection{3D Transformations}
+
+\subsubsection{Translation}
+\[ T(t_x, t_y, t_z) = \begin{bmatrix} 1 & 0 & 0 & t_x \\ 0 & 1 & 0 & t_y \\ 0 & 0 & 1 & t_z \\ 0 & 0 & 0 & 1 \end{bmatrix} \]
+
+\subsubsection{Scaling}
+\[ S(s_x, s_y, s_z) = \begin{bmatrix} s_x & 0 & 0 & 0 \\ 0 & s_y & 0 & 0 \\ 0 & 0 & s_z & 0 \\ 0 & 0 & 0 & 1 \end{bmatrix} \]
+
+\subsubsection{Rotation}
+
+\textbf{About Z-axis:}
+\[ R_Z(\theta) = \begin{bmatrix} \cos\theta & -\sin\theta & 0 & 0 \\ \sin\theta & \cos\theta & 0 & 0 \\ 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 1 \end{bmatrix} \]
+
+Similarly for $R_X(\theta)$ and $R_Y(\theta)$.
+
+\textbf{Euler angles:} Sequence of rotations (e.g., Z-Y-X)
+\textbf{Issue:} Gimbal lock, non-commutative
+
+\textbf{Alternative:} Quaternions (avoid gimbal lock, smooth interpolation)
+
+\subsection{Pinhole Camera Model}
+
+\textbf{Projection from 3D world to 2D image:}
+
+\[ \begin{bmatrix} u \\ v \\ 1 \end{bmatrix} \equiv \begin{bmatrix} f & 0 & 0 & 0 \\ 0 & f & 0 & 0 \\ 0 & 0 & 1 & 0 \end{bmatrix} \begin{bmatrix} x \\ y \\ z \\ 1 \end{bmatrix} \]
+
+where $f$ is the focal length.
+
+In non-homogeneous form:
+\[ u = f \frac{x}{z}, \quad v = f \frac{y}{z} \]
+
+\subsection{Camera Intrinsic Matrix}
+
+Full intrinsic matrix $K$:
+\[ K = \begin{bmatrix} f_x & s & c_x \\ 0 & f_y & c_y \\ 0 & 0 & 1 \end{bmatrix} \]
+
+\begin{itemize}
+    \item $f_x, f_y$: focal lengths in pixels (may differ due to pixel aspect ratio)
+    \item $c_x, c_y$: principal point (image center)
+    \item $s$: skew (usually 0 for modern cameras)
+\end{itemize}
+
+\subsection{Camera Extrinsic Matrix}
+
+Relates world coordinates to camera coordinates:
+\[ \begin{bmatrix} x_c \\ y_c \\ z_c \\ 1 \end{bmatrix} = \begin{bmatrix} R & \mathbf{t} \\ \mathbf{0}^T & 1 \end{bmatrix} \begin{bmatrix} x_w \\ y_w \\ z_w \\ 1 \end{bmatrix} \]
+
+where $R$ is 3×3 rotation, $\mathbf{t}$ is translation.
+
+\subsection{Full Projection Pipeline}
+
+\[ \mathbf{p}_{\text{image}} = K [R | \mathbf{t}] \mathbf{P}_{\text{world}} \]
+
+Often written as:
+\[ \mathbf{p} \equiv P \mathbf{P}_w = K [R | \mathbf{t}] \mathbf{P}_w \]
+
+$P$ is the $3 \times 4$ \textbf{camera projection matrix}.
+
+%=======================================================================
+\section{Camera Calibration}
+%=======================================================================
+
+\subsection{Goal}
+
+Recover intrinsic matrix $K$ and distortion parameters from images of known 3D points (e.g., checkerboard).
+
+\subsection{Zhang's Method}
+
+\textbf{Setup:} Capture multiple images of a planar pattern (checkerboard) from different viewpoints.
+
+\textbf{Steps:}
+\begin{enumerate}
+    \item Detect corners in each image
+    \item For each image, compute homography $H_i$ from pattern plane to image
+    \item Relate $H_i$ to $K$ and extrinsics via constraints
+    \item Solve for $K$ parameters (closed-form + refinement)
+    \item Optionally estimate radial/tangential distortion
+\end{enumerate}
+
+\subsection{Lens Distortion}
+
+\subsubsection{Radial Distortion}
+\[ \begin{aligned} x_{\text{distorted}} &= x(1 + k_1 r^2 + k_2 r^4 + k_3 r^6) \\ y_{\text{distorted}} &= y(1 + k_1 r^2 + k_2 r^4 + k_3 r^6) \end{aligned} \]
+where $r^2 = x^2 + y^2$.
+
+\subsubsection{Tangential Distortion}
+\[ \begin{aligned} x_{\text{distorted}} &= x + [2p_1 xy + p_2(r^2 + 2x^2)] \\ y_{\text{distorted}} &= y + [p_1(r^2 + 2y^2) + 2p_2 xy] \end{aligned} \]
+
+%=======================================================================
+\section{Stereo Vision}
+%=======================================================================
+
+\subsection{Epipolar Geometry}
+
+\textbf{Baseline:} Line connecting two camera centers
+\textbf{Epipoles:} Projection of one camera center into the other image
+\textbf{Epipolar plane:} Plane through baseline and 3D point
+\textbf{Epipolar lines:} Intersection of epipolar plane with image planes
+
+\textbf{Epipolar constraint:} Corresponding point must lie on the epipolar line.
+
+\subsection{Essential and Fundamental Matrices}
+
+\subsubsection{Essential Matrix $E$}
+For calibrated cameras (normalized coordinates):
+\[ \mathbf{x}'^T E \mathbf{x} = 0 \]
+
+$E$ encodes relative rotation and translation between cameras.
+
+\subsubsection{Fundamental Matrix $F$}
+For uncalibrated cameras (pixel coordinates):
+\[ \mathbf{u}'^T F \mathbf{u} = 0 \]
+
+Related by: $F = K'^{-T} E K^{-1}$
+
+\subsection{Computing the Fundamental Matrix}
+
+\textbf{8-point algorithm:}
+\begin{enumerate}
+    \item From $n \geq 8$ point matches, form constraint:
+    \[ \begin{bmatrix} u'u & u'v & u' & v'u & v'v & v' & u & v & 1 \end{bmatrix} \mathbf{f} = 0 \]
+    \item Stack into matrix $A$, solve via SVD
+    \item Enforce rank-2 constraint on $F$
+    \item Normalize (typically using RANSAC for robustness)
+\end{enumerate}
+
+\subsection{Stereo Rectification}
+
+\textbf{Goal:} Transform images so epipolar lines are horizontal and scanlines aligned.
+
+\textbf{Result:} Corresponding points have same $y$-coordinate, simplifying search to 1D along rows.
+
+\subsection{Dense Stereo Matching}
+
+\subsubsection{Block Matching}
+For each pixel in left image:
+\begin{enumerate}
+    \item Extract window around pixel
+    \item Search along corresponding epipolar line in right image
+    \item Compute similarity (SSD, SAD, NCC)
+    \item Select best match → disparity $d$
+\end{enumerate}
+
+\subsubsection{Cost Functions}
+
+\textbf{Sum of Squared Differences (SSD):}
+\[ C(x, y, d) = \sum_{(i,j) \in W} [I_L(x+i, y+j) - I_R(x+i-d, y+j)]^2 \]
+
+\textbf{Normalized Cross-Correlation (NCC):}
+\[ C(x,y,d) = \frac{\sum W_L \cdot W_R}{\sqrt{\sum W_L^2 \sum W_R^2}} \]
+
+\subsection{Disparity to Depth}
+
+\[ Z = \frac{f \cdot B}{d} \]
+
+where:
+\begin{itemize}
+    \item $Z$ = depth
+    \item $f$ = focal length
+    \item $B$ = baseline (distance between cameras)
+    \item $d$ = disparity (pixel offset)
+\end{itemize}
+
+%=======================================================================
+\section{Depth Sensing}
+%=======================================================================
+
+\subsection{Active Depth Sensing Methods}
+
+\subsubsection{Structured Light}
+\begin{itemize}
+    \item Project known pattern onto scene
+    \item Observe deformation of pattern
+    \item Triangulate depth from deformation
+    \item \textbf{Examples:} Microsoft Kinect v1, Intel RealSense
+\end{itemize}
+
+\subsubsection{Time-of-Flight (ToF)}
+\begin{itemize}
+    \item Emit modulated light
+    \item Measure phase shift of reflected light
+    \item $\text{Depth} = \frac{c \cdot \Delta t}{2}$ where $c$ is speed of light
+    \item \textbf{Examples:} Microsoft Kinect v2, PMD sensors
+\end{itemize}
+
+\subsubsection{LiDAR}
+\begin{itemize}
+    \item Laser scanning
+    \item Direct time-of-flight measurement
+    \item High accuracy, long range
+    \item \textbf{Examples:} Velodyne, autonomous vehicles
+\end{itemize}
+
+\subsection{Working with Range Data}
+
+\subsubsection{Point Clouds}
+\begin{itemize}
+    \item Set of 3D points $\{(x_i, y_i, z_i)\}$
+    \item Often with colour/intensity per point
+    \item \textbf{Processing:} filtering, downsampling, normal estimation
+\end{itemize}
+
+\subsubsection{Depth Maps}
+\begin{itemize}
+    \item 2D image where each pixel stores depth
+    \item Organized structure (unlike unordered point cloud)
+    \item \textbf{Conversion:} Backproject using intrinsics to get 3D
+\end{itemize}
+
+%=======================================================================
+\section{3D Reconstruction}
+%=======================================================================
+
+\subsection{Multi-View Stereo (MVS)}
+
+\textbf{Goal:} Reconstruct dense 3D model from multiple images.
+
+\textbf{Approaches:}
+\begin{itemize}
+    \item \textbf{Volumetric:} Voxel grids, truncated signed distance functions (TSDF)
+    \item \textbf{Patch-based:} Grow surface patches from seed points
+    \item \textbf{Depth map fusion:} Compute depth maps from pairs, merge into consistent model
+\end{itemize}
+
+\subsection{Structure from Motion (SfM)}
+
+\textbf{Goal:} Simultaneously recover camera poses and 3D structure from unordered images.
+
+\textbf{Pipeline:}
+\begin{enumerate}
+    \item Feature detection and matching across images
+    \item Initialize reconstruction from two views
+    \item Incrementally add images:
+    \begin{itemize}
+        \item Estimate pose via PnP (Perspective-n-Point)
+        \item Triangulate new 3D points
+        \item Bundle adjustment to refine cameras and points
+    \end{itemize}
+    \item Repeat until all images incorporated
+\end{enumerate}
+
+\subsection{Bundle Adjustment}
+
+\textbf{Optimization:} Minimize reprojection error over all cameras and 3D points:
+\[ \min_{\{P_j\}, \{C_i\}} \sum_{i,j} \| \mathbf{u}_{ij} - \pi(C_i, P_j) \|^2 \]
+
+where $\mathbf{u}_{ij}$ is observed 2D point, $\pi$ is projection function, $C_i$ are cameras, $P_j$ are 3D points.
+
+Solved using non-linear least squares (Levenberg-Marquardt).
+
+%=======================================================================
+\section{Computer Graphics: Rendering Pipeline}
+%=======================================================================
+
+\subsection{Graphics Pipeline Overview}
+
+Modern real-time graphics (OpenGL/DirectX) use a \textbf{programmable pipeline}:
+
+\begin{enumerate}
+    \item \textbf{Vertex Processing} (Vertex Shader)
+    \begin{itemize}
+        \item Transform vertices (Model → World → View → Clip space)
+        \item Compute per-vertex lighting/colours
+    \end{itemize}
+    \item \textbf{Primitive Assembly \& Rasterization}
+    \begin{itemize}
+        \item Assemble triangles
+        \item Rasterize to fragments (potential pixels)
+    \end{itemize}
+    \item \textbf{Fragment Processing} (Fragment Shader)
+    \begin{itemize}
+        \item Compute final pixel colour
+        \item Texturing, lighting, effects
+    \end{itemize}
+    \item \textbf{Per-Fragment Operations}
+    \begin{itemize}
+        \item Depth testing, stencil testing
+        \item Blending, output to framebuffer
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Transformation Matrices}
+
+\subsubsection{Model Matrix ($M$)}
+Transforms object coordinates to world space.
+
+\subsubsection{View Matrix ($V$)}
+Transforms world coordinates to camera/view space.
+\[ V = \text{lookAt}(\mathbf{eye}, \mathbf{center}, \mathbf{up}) \]
+
+\subsubsection{Projection Matrix ($P$)}
+
+\textbf{Perspective:}
+\[ P_{\text{persp}} = \begin{bmatrix} \frac{2n}{r-l} & 0 & \frac{r+l}{r-l} & 0 \\ 0 & \frac{2n}{t-b} & \frac{t+b}{t-b} & 0 \\ 0 & 0 & -\frac{f+n}{f-n} & -\frac{2fn}{f-n} \\ 0 & 0 & -1 & 0 \end{bmatrix} \]
+
+where $n, f$ are near/far planes, $l, r, t, b$ define frustum.
+
+\textbf{Orthographic:}
+\[ P_{\text{ortho}} = \begin{bmatrix} \frac{2}{r-l} & 0 & 0 & -\frac{r+l}{r-l} \\ 0 & \frac{2}{t-b} & 0 & -\frac{t+b}{t-b} \\ 0 & 0 & -\frac{2}{f-n} & -\frac{f+n}{f-n} \\ 0 & 0 & 0 & 1 \end{bmatrix} \]
+
+\subsubsection{MVP Matrix}
+Combined transformation:
+\[ \text{MVP} = P \cdot V \cdot M \]
+
+Applied in vertex shader:
+\begin{lstlisting}[language=C]
+gl_Position = MVP * vec4(vertexPosition_modelspace, 1.0);
+\end{lstlisting}
+
+%=======================================================================
+\section{OpenGL and Shader Programming}
+%=======================================================================
+
+\subsection{OpenGL Context and State}
+
+\begin{itemize}
+    \item \textbf{Context:} Environment linking application to GPU
+    \item \textbf{State machine:} OpenGL stores configuration (current program, buffers, textures)
+    \item \textbf{Objects:} Buffers (VBO, IBO), textures, framebuffers, shaders
+\end{itemize}
+
+\subsection{Vertex Buffer Objects (VBO)}
+
+Store vertex data on GPU:
+\begin{lstlisting}[language=C]
+GLuint vbo;
+glGenBuffers(1, &vbo);
+glBindBuffer(GL_ARRAY_BUFFER, vbo);
+glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+\end{lstlisting}
+
+\subsection{Vertex Array Objects (VAO)}
+
+Encapsulate vertex attribute state:
+\begin{lstlisting}[language=C]
+GLuint vao;
+glGenVertexArrays(1, &vao);
+glBindVertexArray(vao);
+// Configure vertex attributes
+glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+glEnableVertexAttribArray(0);
+\end{lstlisting}
+
+\subsection{Shader Language (GLSL)}
+
+\subsubsection{Data Types}
+\begin{itemize}
+    \item \textbf{Scalars:} \texttt{int, uint, float, bool}
+    \item \textbf{Vectors:} \texttt{vec2, vec3, vec4} (float), \texttt{ivec2, ivec3, ivec4} (int)
+    \item \textbf{Matrices:} \texttt{mat2, mat3, mat4}
+    \item \textbf{Samplers:} \texttt{sampler2D, samplerCube} (textures)
+\end{itemize}
+
+\subsubsection{Vertex Shader Example}
+\begin{lstlisting}[language=C]
+#version 330 core
+
+// Input
+layout(location = 0) in vec3 vertexPosition_modelspace;
+layout(location = 1) in vec3 vertexNormal_modelspace;
+
+// Output to fragment shader
+out vec3 fragNormal;
+
+// Uniforms
+uniform mat4 MVP;
+uniform mat4 M;
+
+void main() {
+    gl_Position = MVP * vec4(vertexPosition_modelspace, 1.0);
+    fragNormal = (M * vec4(vertexNormal_modelspace, 0.0)).xyz;
+}
+\end{lstlisting}
+
+\subsubsection{Fragment Shader Example}
+\begin{lstlisting}[language=C]
+#version 330 core
+
+// Input from vertex shader
+in vec3 fragNormal;
+
+// Output
+out vec3 color;
+
+// Uniforms
+uniform vec3 lightDir;
+uniform vec3 objectColor;
+
+void main() {
+    float diffuse = max(dot(normalize(fragNormal), lightDir), 0.0);
+    color = objectColor * diffuse;
+}
+\end{lstlisting}
+
+%=======================================================================
+\section{Illumination and Shading}
+%=======================================================================
+
+\subsection{Light-Material Interaction}
+
+\textbf{Rendering equation (simplified):}
+\[ L_o = L_e + \int_{\Omega} f_r(\omega_i, \omega_o) L_i(\omega_i) (\mathbf{n} \cdot \omega_i) d\omega_i \]
+
+where:
+\begin{itemize}
+    \item $L_o$: outgoing radiance
+    \item $L_e$: emitted radiance
+    \item $f_r$: BRDF (bidirectional reflectance distribution function)
+    \item $L_i$: incoming radiance
+    \item $\mathbf{n}$: surface normal
+\end{itemize}
+
+\subsection{Phong Reflection Model}
+
+\[ I = k_a I_a + k_d I_d (\mathbf{n} \cdot \mathbf{l}) + k_s I_s (\mathbf{r} \cdot \mathbf{v})^\alpha \]
+
+\begin{description}
+    \item[Ambient] $k_a I_a$: Constant background illumination
+    \item[Diffuse] $k_d I_d (\mathbf{n} \cdot \mathbf{l})$: Lambertian reflection (matte surfaces)
+    \item[Specular] $k_s I_s (\mathbf{r} \cdot \mathbf{v})^\alpha$: Highlights ($\mathbf{r}$ is reflection of light $\mathbf{l}$ about normal $\mathbf{n}$, $\alpha$ is shininess)
+\end{description}
+
+\subsection{Blinn-Phong Model}
+
+Modification using halfway vector $\mathbf{h} = \frac{\mathbf{l} + \mathbf{v}}{|\mathbf{l} + \mathbf{v}|}$:
+
+\[ I = k_a I_a + k_d I_d (\mathbf{n} \cdot \mathbf{l}) + k_s I_s (\mathbf{n} \cdot \mathbf{h})^\alpha \]
+
+\textbf{Advantages:} Computationally cheaper (no reflection vector), better highlights.
+
+\subsection{Shading Methods}
+
+\begin{description}
+    \item[Flat Shading] One normal/color per triangle (faceted look)
+    \item[Gouraud Shading] Interpolate vertex colours across triangle (smooth but misses highlights)
+    \item[Phong Shading] Interpolate vertex normals, compute lighting per fragment (best quality)
+\end{description}
+
+\subsection{Normal Mapping}
+
+Store per-pixel normals in a texture (normal map) to simulate geometric detail without geometry.
+
+\textbf{Tangent Space:}
+\begin{itemize}
+    \item Normal map encodes normals in tangent space
+    \item Transform light/view to tangent space (via TBN matrix) or normals to world space
+\end{itemize}
+
+\begin{lstlisting}[language=C]
+// In fragment shader
+vec3 normalMap = texture(normalSampler, UV).rgb * 2.0 - 1.0;
+vec3 N = normalize(TBN * normalMap);
+\end{lstlisting}
+
+%=======================================================================
+\section{Texture Mapping}
+%=======================================================================
+
+\subsection{Texture Coordinates}
+
+\textbf{UV mapping:} Assign 2D coordinates $(u, v) \in [0,1]^2$ to each vertex.
+
+Rasterizer interpolates UVs across triangle, fragment shader samples texture:
+\begin{lstlisting}[language=C]
+vec4 texColor = texture(textureSampler, UV);
+\end{lstlisting}
+
+\subsection{Texture Filtering}
+
+\subsubsection{Minification (texture smaller than screen area)}
+\begin{itemize}
+    \item \textbf{Nearest:} Blocky artifacts
+    \item \textbf{Linear:} Smooth but blurry
+    \item \textbf{Mipmapping:} Precompute downsampled versions, interpolate between levels (trilinear filtering)
+\end{itemize}
+
+\subsubsection{Magnification (texture larger than screen area)}
+\begin{itemize}
+    \item \textbf{Nearest:} Pixelated
+    \item \textbf{Linear:} Smooth
+\end{itemize}
+
+\subsection{Advanced Texturing}
+
+\begin{description}
+    \item[Environment Mapping] Reflection/refraction using cube maps
+    \item[Displacement Mapping] Actually modify geometry based on texture (expensive)
+    \item[Parallax Mapping] Offset UVs to simulate depth without geometry changes
+\end{description}
+
+%=======================================================================
+\section{Shadow Mapping}
+%=======================================================================
+
+\subsection{Basic Shadow Mapping Algorithm}
+
+\textbf{Two-pass technique:}
+
+\textbf{Pass 1 (Light's View):}
+\begin{enumerate}
+    \item Render scene from light's perspective
+    \item Store depth values in \textbf{shadow map} (depth texture)
+\end{enumerate}
+
+\textbf{Pass 2 (Camera's View):}
+\begin{enumerate}
+    \item Render scene from camera
+    \item For each fragment:
+    \begin{itemize}
+        \item Transform fragment position to light space
+        \item Compare fragment depth to shadow map depth
+        \item If fragment deeper, it's in shadow
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Shadow Acne}
+
+\textbf{Problem:} Precision errors cause self-shadowing artifacts.
+
+\textbf{Solution:} Apply depth bias:
+\begin{lstlisting}[language=C]
+float shadow = (fragDepth > shadowMapDepth + bias) ? 0.0 : 1.0;
+\end{lstlisting}
+
+\subsection{Peter Panning}
+
+\textbf{Problem:} Bias too large causes shadows to detach from objects.
+
+\textbf{Solution:} Adjust bias adaptively based on surface slope:
+\begin{lstlisting}[language=C]
+float bias = max(0.05 * (1.0 - dot(N, L)), 0.005);
+\end{lstlisting}
+
+\subsection{Percentage Closer Filtering (PCF)}
+
+\textbf{Soft shadows:} Sample shadow map in neighbourhood and average:
+\begin{lstlisting}[language=C]
+float shadow = 0.0;
+for (int x = -1; x <= 1; ++x) {
+    for (int y = -1; y <= 1; ++y) {
+        float depth = texture(shadowMap, projCoords.xy + vec2(x,y) * texelSize).r; 
+        shadow += (fragDepth > depth + bias) ? 0.0 : 1.0;        
+    } 
+}
+shadow /= 9.0;
+\end{lstlisting}
+
+\subsection{Cascaded Shadow Maps (CSM)}
+
+\textbf{Problem:} Single shadow map has limited resolution over large scenes.
+
+\textbf{Solution:} Multiple shadow maps for different depth ranges (near camera gets higher resolution).
+
+%=======================================================================
+\section{Advanced Rendering Techniques}
+%=======================================================================
+
+\subsection{Deferred Shading}
+
+\textbf{Problem:} Forward rendering applies lighting to all fragments, even occluded ones.
+
+\textbf{Deferred approach:}
+\begin{enumerate}
+    \item \textbf{G-buffer pass:} Render geometry properties (position, normal, albedo, etc.) to multiple textures
+    \item \textbf{Lighting pass:} For each light, apply lighting using G-buffer (only visible fragments)
+\end{enumerate}
+
+\textbf{Advantages:}
+\begin{itemize}
+    \item Decouple geometry complexity from light count
+    \item Efficient for many lights
+\end{itemize}
+
+\textbf{Disadvantages:}
+\begin{itemize}
+    \item High memory bandwidth (large G-buffers)
+    \item Difficult with transparency
+    \item No hardware MSAA (need post-process AA)
+\end{itemize}
+
+\subsection{Screen Space Ambient Occlusion (SSAO)}
+
+Approximate ambient occlusion in screen space:
+\begin{enumerate}
+    \item For each pixel, sample depth buffer in hemisphere around surface
+    \item Count how many samples are occluded
+    \item Darken pixel proportionally
+\end{enumerate}
+
+\subsection{Bloom}
+
+Simulate light scattering:
+\begin{enumerate}
+    \item Extract bright regions (threshold)
+    \item Gaussian blur
+    \item Add back to original image
+\end{enumerate}
+
+%=======================================================================
+\section{WebGL}
+%=======================================================================
+
+\subsection{Overview}
+
+\textbf{WebGL} is a JavaScript API for rendering 3D graphics in web browsers, based on OpenGL ES 2.0/3.0.
+
+\textbf{Key differences from desktop OpenGL:}
+\begin{itemize}
+    \item Runs in browser sandbox (security restrictions)
+    \item GLSL ES (simpler, stricter than desktop GLSL)
+    \item No fixed-function pipeline (must use shaders)
+\end{itemize}
+
+\subsection{Basic Setup}
+\begin{lstlisting}[language=JavaScript]
+// Get canvas and WebGL context
+const canvas = document.getElementById('glCanvas');
+const gl = canvas.getContext('webgl2');
+
+// Create shader program
+const program = createShaderProgram(gl, vertexSource, fragmentSource);
+gl.useProgram(program);
+
+// Set up buffers and draw
+const vbo = gl.createBuffer();
+gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
+gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+
+gl.drawArrays(gl.TRIANGLES, 0, vertexCount);
+\end{lstlisting}
+
+%=======================================================================
+\section{Scene Graphs and Game Engines}
+%=======================================================================
+
+\subsection{Scene Graph}
+
+\textbf{Hierarchical structure} organizing scene objects:
+
+\begin{itemize}
+    \item \textbf{Root node:} Scene origin
+    \item \textbf{Group nodes:} Contain children, apply transformations
+    \item \textbf{Geometry nodes:} Actual 3D models
+    \item \textbf{Material/Appearance nodes:} Visual properties
+\end{itemize}
+
+\textbf{Benefits:}
+\begin{itemize}
+    \item Logical organization
+    \item Relative transformations (e.g., car wheels inherit car's motion)
+    \item Efficient culling and rendering
+\end{itemize}
+
+\textbf{Example hierarchy:}
+\begin{verbatim}
+Root
+├─ Group (Car)
+│  ├─ Transform
+│  ├─ Geometry (CarBody)
+│  ├─ Group (Wheel1)
+│  │  ├─ Transform
+│  │  └─ Geometry (WheelMesh)
+│  └─ ...
+\end{verbatim}
+
+\subsection{Modern Game Engines}
+
+\textbf{Entity-Component-System (ECS):}
+\begin{itemize}
+    \item \textbf{Entity:} ID/handle
+    \item \textbf{Component:} Data (transform, mesh, physics, ...)
+    \item \textbf{System:} Logic operating on components
+\end{itemize}
+
+\textbf{Advantages:} Data-oriented design, cache-friendly, flexible composition.
+
+%=======================================================================
+\section{Ray Tracing}
+%=======================================================================
+
+\subsection{Ray Tracing Algorithm}
+
+\textbf{For each pixel:}
+\begin{enumerate}
+    \item Cast ray from camera through pixel
+    \item Find closest intersection with scene geometry
+    \item Compute colour at intersection:
+    \begin{itemize}
+        \item Local illumination (Phong/BRDF)
+        \item Cast shadow rays to lights
+        \item Recursively cast reflection/refraction rays
+    \end{itemize}
+    \item Accumulate contributions
+\end{enumerate}
+
+\subsection{Ray-Object Intersection}
+
+\subsubsection{Ray-Sphere}
+Ray: $\mathbf{p}(t) = \mathbf{o} + t\mathbf{d}$
+Sphere: $|\mathbf{p} - \mathbf{c}|^2 = r^2$
+
+Solve:
+\[ |\mathbf{o} + t\mathbf{d} - \mathbf{c}|^2 = r^2 \]
+\[ At^2 + Bt + C = 0 \]
+where $A = \mathbf{d} \cdot \mathbf{d}$, $B = 2\mathbf{d} \cdot (\mathbf{o} - \mathbf{c})$, $C = |\mathbf{o} - \mathbf{c}|^2 - r^2$
+
+\subsubsection{Ray-Triangle}
+Möller-Trumbore algorithm (barycentric coordinates + direct solution).
+
+\subsection{Acceleration Structures}
+
+\textbf{Problem:} Testing every object is $O(n)$ per ray.
+
+\textbf{Solutions:}
+\begin{itemize}
+    \item \textbf{Bounding Volume Hierarchy (BVH):} Tree of bounding boxes
+    \item \textbf{k-d tree:} Spatial subdivision
+    \item \textbf{Octree:} Recursive 3D grid subdivision
+\end{itemize}
+
+\subsection{Path Tracing}
+
+Extension for physically-based rendering:
+\begin{itemize}
+    \item Trace many rays per pixel (Monte Carlo integration)
+    \item Simulate light bounces with random sampling
+    \item Converges to correct global illumination
+\end{itemize}
+
+%=======================================================================
+\section{Summary and Key Concepts}
+%=======================================================================
+
+\subsection{Computer Vision Topics}
+
+\begin{itemize}
+    \item \textbf{Image representation:} Rasters, pixels, colour spaces
+    \item \textbf{Transformations:} 2D/3D homogeneous coordinates, rotation, scaling, translation
+    \item \textbf{Filtering:} Convolution, edge detection (Sobel, Laplacian)
+    \item \textbf{Features:} Harris corners, SIFT, ORB, feature matching
+    \item \textbf{Geometry:} Homographies, epipolar geometry, Essential/Fundamental matrices
+    \item \textbf{Calibration:} Intrinsic/extrinsic parameters, distortion models
+    \item \textbf{Stereo:} Rectification, disparity, depth estimation
+    \item \textbf{Depth sensors:} Structured light, ToF, LiDAR
+    \item \textbf{3D reconstruction:} SfM, MVS, bundle adjustment
+\end{itemize}
+
+\subsection{Computer Graphics Topics}
+
+\begin{itemize}
+    \item \textbf{Pipeline:} Vertex shader → Rasterization → Fragment shader
+    \item \textbf{Transformations:} Model-View-Projection matrices
+    \item \textbf{OpenGL:} Context, state, VBO/VAO, shaders (GLSL)
+    \item \textbf{Illumination:} Phong/Blinn-Phong, normal mapping
+    \item \textbf{Texturing:} UV mapping, filtering, mipmaps
+    \item \textbf{Shadows:} Shadow mapping, PCF, CSM
+    \item \textbf{Advanced:} Deferred shading, SSAO, bloom
+    \item \textbf{Scene organization:} Scene graphs, ECS
+    \item \textbf{Ray tracing:} Ray-object intersection, BVH, path tracing
+\end{itemize}
+
+\subsection{Exam Preparation Tips}
+
+\begin{enumerate}
+    \item \textbf{Understand transformations:} Be able to construct and multiply homogeneous matrices
+    \item \textbf{Epipolar geometry:} Draw epipolar lines, relate $E$ and $F$
+    \item \textbf{Camera model:} Derive projection equations, know intrinsic/extrinsic parameters
+    \item \textbf{Shader programming:} Understand vertex/fragment pipeline, write basic GLSL
+    \item \textbf{Lighting models:} Implement Phong/Blinn-Phong from scratch
+    \item \textbf{Shadow mapping:} Explain two-pass algorithm, common artifacts and fixes
+    \item \textbf{RANSAC:} Explain algorithm and parameter selection
+\end{enumerate}
+
+%=======================================================================
+\section*{References and Further Reading}
+%=======================================================================
+\addcontentsline{toc}{section}{References}
+
+\begin{itemize}
+    \item \textbf{Computer Vision:} Szeliski, R. \textit{Computer Vision: Algorithms and Applications}
+    \item \textbf{Multiple View Geometry:} Hartley \& Zisserman, \textit{Multiple View Geometry in Computer Vision}
+    \item \textbf{Computer Graphics:} Shirley et al., \textit{Fundamentals of Computer Graphics}
+    \item \textbf{Real-Time Rendering:} Akenine-Möller et al., \textit{Real-Time Rendering}
+    \item \textbf{OpenGL:} \url{https://learnopengl.com/}
+    \item \textbf{WebGL:} \url{https://webglfundamentals.org/}
+\end{itemize}
+
+\end{document}

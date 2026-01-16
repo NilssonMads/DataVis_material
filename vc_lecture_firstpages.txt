@@ -1,0 +1,74 @@
+=== VC_L03_2DTransforms.pdf pages=49
+X Visual Computing I:   Interactive Computer Graphics and Vision 2D Transforms  Stefanie Zollmann 
+
+=== Visual Computing L05_FeaturesDescription.pdf pages=86
+Visual Computing I:  Interactive Computer Graphics and Vision Features, Features Description and Feature Matching  Stefanie Zollmann and Tobias Langlotz  
+
+=== Visual Computing L11 SensingDepth.pdf pages=101
+Visual Computing I:  Interactive Computer Graphics and Vision Practical Depth Sensing and Working with Range Data  Stefanie Zollmann and Tobias Langlotz  
+
+=== Visual Computing L25 Recap.pdf pages=14
+Visual Computing I:   Interactive Computer Graphics and Vision Recap Lecture Computer Graphics Stefanie Zollmann and Tobias Langlotz  
+
+=== VisualComputing20ShadowMappingOptimisations.pdf pages=23
+Visual Computing I:   Interactive Computer Graphics and Vision Shadow Mapping Optimisations   Stefanie Zollmann and Tobias Langlotz  
+
+=== VisualComputing21Advanced.pdf pages=23
+Visual Computing I:   Interactive Computer Graphics and Vision Advanced Rendering Methods: Deferred Shading Stefanie Zollmann and Tobias Langlotz  
+
+=== VisualComputing22WebGL.pdf pages=38
+Visual Computing I:   Interactive Computer Graphics and Vision WebGL Stefanie Zollmann and Tobias Langlotz  
+
+=== VisualComputing23SceneGraphs.pdf pages=57
+Visual Computing I:   Interactive Computer Graphics and Vision Scenegraphs/Game Engines  Stefanie Zollmann and Tobias Langlotz  Root Group  Group Transform Geometry Geometry Geometry Material 
+
+=== VisualComputing24Raytracing.pdf pages=34
+Visual Computing I:   Interactive Computer Graphics and Vision Raytracing Stefanie Zollmann and Tobias Langlotz  
+
+=== VisualComputing_L01_Intro.pdf pages=83
+Visual Computing I:   Interactive Computer Graphics and Vision Intro  Stefanie Zollmann and Tobias Langlotz  
+
+=== VisualComputingGraphicsIntro.pdf pages=49
+Visual Computing I:   Interactive Computer Graphics and Vision Computer Graphics Introduction Stefanie Zollmann and Tobias Langlotz  
+
+=== VisualComputingL02Digital Images.pdf pages=72
+Digital Images and Colour Representation  Tobias Langlotz Visual Computing I:   Interactive Computer Graphics and Vision
+
+=== VisualComputingL04ImageManipulation.pdf pages=102
+Visual Computing I:   Interactive Computer Graphics and Vision Digital Image Processing (Manipulation and Analysis) Stefanie Zollmann and Tobias Langlotz  
+
+=== VisualComputingL06_Homographies.pdf pages=48
+Visual Computing I:   Interactive Computer Graphics and Vision Feature Matching, Image Stitching, Homographies Stefanie Zollmann and Tobias Langlotz  
+
+=== VisualComputingL07.pdf pages=48
+Visual Computing I:   Interactive Computer Graphics and Vision Homographies, RANSAC, Blending Stefanie Zollmann and Tobias Langlotz  [ ??? ??? ???]
+
+=== VisualComputingL08_3DGeometry.pdf pages=64
+Visual Computing I:   Interactive Computer Graphics and Vision 3D Geometry and Cameras Stefanie Zollmann and Tobias Langlotz  
+
+=== VisualComputingL09_Calibration_Stereo.pdf pages=49
+Visual Computing I:   Interactive Computer Graphics and Vision Camera Calibration and Stereo Vision Stefanie Zollmann and Tobias Langlotz  
+
+=== VisualComputingL10FundamentalMatrixDenseStereo.pdf pages=61
+Visual Computing I:   Interactive Computer Graphics and Vision Stereo and Dense Depth Stefanie Zollmann and Tobias Langlotz  
+
+=== VisualComputingL12Multiview.pdf pages=79
+Visual Computing I:   Interactive Computer Graphics and Vision Depth Maps Processing, 3D Reconstruction Stefanie Zollmann and Tobias Langlotz  
+
+=== VisualComputingL13Recap.pdf pages=32
+Visual Computing I:   Interactive Computer Graphics and Vision 3D Reconstruction/Recap Lecture Stefanie Zollmann and Tobias Langlotz  
+
+=== VisualComputingL14GraphicsIntro.pdf pages=72
+Visual Computing I:   Interactive Computer Graphics and Vision Computer Graphics Introduction Stefanie Zollmann and Tobias Langlotz  
+
+=== VisualComputingL15ShaderProgramming.pdf pages=65
+Visual Computing I:   Interactive Computer Graphics and Vision OpenGL/Shader Programming Stefanie Zollmann and Tobias Langlotz  
+
+=== VisualComputingL16Illumination (1).pdf pages=59
+Visual Computing I:  Interactive Computer Graphics and Vision Illumination Stefanie Zollmann and Tobias Langlotz  
+
+=== VisualComputingL17TextureMapping.pdf pages=53
+Visual Computing I:  Interactive Computer Graphics and Vision Texture Mapping Stefanie Zollmann and Tobias Langlotz  
+
+=== VisualComputingL19ShadowMapping.key.pdf pages=61
+Visual Computing I:   Interactive Computer Graphics and Vision Stencil Buffers, Render to Texture, Shadow Mapping Stefanie Zollmann and Tobias Langlotz  

@@ -1,0 +1,189 @@
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+GRAPH VISUALIZATION HANS-JÖRG SCHULZ
+AU
+GRAPH VISUALIZATION
+Hans-Jörg SchulzGRAPH VISUALIZATION HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+1. INTRODUCTION 3. BASIC CHART TYPES
+Basics
+      Visualization
+Building Blocks
+& Processes
+     Visualization
+Techniques
+Visualization
+Applications
+2. VISUAL ENCODING
+4. INTERACTION
+6. DATA PREPROCESSING
+5. VISUALIZATION DESIGN
+7. RECAP 1st Half
+8. MULTIVARIATE DATAVIS
+10. GEOSPATIAL DATAVIS
+9. TEMPORAL DATAVIS
+11. GRAPH DATAVIS
+12. 3D DATAVIS 13. VISUAL ANALYTICS
+14. RECAP 2nd HalfGRAPH VISUALIZATION HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+WHY TALK ABOUT GRAPH VISUALIZATION?
+Graphs / networks put two data items into relation to each other.
+• Social networks
+• Computer networks
+• Call graphs of a software
+• Traffic networks
+• …
+If that relation is hierarchical, we also speak of a tree structure.GRAPH VISUALIZATION HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+DATA VALUES VS. DATA RELATION
+GRAPH VISUALIZATION HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+FUNDAMENTAL TERMS
+​Data item => Node
+​Data relation => Edge
+​# of Data items related to a given data item X => Degree of X
+​Numerical attributes of nodes and edges => Weights
+​Graph w/o cycles => Tree
+​Dedicated node of a tree => Root
+​Data item A (closer to the root) having an edge to B (further from the root)
+​       => A is the Parent, B is the Child
+Nodes having the same parent => Siblings
+Nodes having no children => Leaves
+​Average # of children in a tree => Branching factorGRAPH VISUALIZATION HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+OVERVIEW
+​1. Node Link Diagrams
+• Force-Directed Layout Mechanism & Extensions
+​2. Matrix Visualizations
+• Matrices and Hierarchical Matrices
+• Ordering Matrices
+3. Implicit Tree Visualization
+• TreeMap, Icicle Plot, Sunburst
+4. Visualization of PO-Sets
+The Sugiyama Layout FrameworkDEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+GRAPH VISUALIZATION HANS-JÖRG SCHULZ
+AU
+NODE-LINK DIAGRAMSGRAPH VISUALIZATION HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+WHAT MAKES A GOOD NODE-LINK-DIAG.?
+• Draw edges straight, polyline,
+orthogonally,…
+• Minimize Edge Crossings
+• Minimize Edge Bends
+• Minimize Aspect Ratio
+• Minimize Drawing Area
+• Maximize Symmetries
+• Maintain Uniform Edge Length
+• …
+Minimum number
+of edge crossings
+Uniform
+ edge lengthGRAPH VISUALIZATION HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+NODE LINK LAYOUTS
+GRAPH VISUALIZATION HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+FORCE-DIRECTED GRAPH LAYOUT
+picture source: [Brandes 2001]
+For each edge between nodes U and V:
+attractive force (spring)
+For each pair of nodes U and V:
+repulsive force (expander)
+Hooke’s Law
+Coulomb’s LawGRAPH VISUALIZATION HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+A FORCE-DIRECTED LAYOUT ALGORITHM
+​1. Initialize Node Positions (e.g., randomly or via pre-layout)
+​2. For a number of iterations do
+3. For all node pairs (u,v) do
+4. Computer Repulsive Force according to Coulomb’s Law: FC=kr(Q1*Q2/r2)
+5. Move u and v apart from each other by a distance FC
+6. For all edges (u,v) do
+7. Compute Attracting Force according to Hooke’s Law: FH=-ka * x
+8. Move u and v closer to each other by FH
+repulsion
+constant
+distance
+between
+u and v
+“charges”
+of u and v
+spring
+constant
+difference
+between the
+distance (u,v)
+and the length
+of the springGRAPH VISUALIZATION HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+GRAPH VISUALIZATION HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+…ADD SIMULATED ANNEALING TO THE MIX
+​1. Initialize Node Positions (e.g., randomly or via pre-layout)
+​    Initialize velocity = 1
+​2. While velocity > 0.0001 do
+3. For all node pairs (u,v) do
+4. Computer Repulsive Force according to Coulomb’s Law: FC=kr(Q1*Q2/r2)
+5. Move u and v apart from each other by a distance FC * velocity
+6. For all edges (u,v) do
+7. Compute Attracting Force according to Hooke’s Law: FH=-ka * x
+8. Move u and v closer to each other by FH * velocity
+9. Velocity = velocity * 0.95
+cooling rateGRAPH VISUALIZATION HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY
+AU
+GRAPH VISUALIZATION HANS-JÖRG SCHULZ
+DATAVIS FALL 2025 ASSOCIATE PROFESSOR
+DEPARTMENT OF COMPUTER SCIENCE
+AARHUS
+UNIVERSITY

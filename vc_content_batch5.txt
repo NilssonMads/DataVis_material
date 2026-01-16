@@ -1,0 +1,381 @@
+=== VisualComputingL15ShaderProgramming.pdf pages=65
+Visual Computing I:  
+Interactive Computer Graphics and Vision
+OpenGL/Shader Programming Stefanie Zollmann and Tobias Langlotz 
+
+How to talk to the Graphics Hardware?
+Let’s Get Practical
+Graphics APIs
+3
+
+4
+
+5
+OpenGL
+• Cross-language, cross-platform 
+application programming interface (API) 
+• Interface is platform-independent 
+• Implementation is platform-
+dependent.  
+• API for interacting with graphics 
+processing unit (GPU) to render 2D and 
+3D graphics 
+• Works using a client-server model 
+• Client (application) creates commands 
+• Server processes commands
+Application
+OpenGL framework
+OpenGL driver
+Graphics hardware
+OpenGL client
+OpenGL server
+Runs on CPU
+Runs on GPU
+
+6
+Important to note:  
+• The API is deﬁned as a set of functions 
+• Drawing commands 
+• Working with identiﬁer: no concept of 
+permanent objects  
+glEnableVertexAttribArray(0);
+glDrawArrays(GL_TRIANGLES, 0, 3);
+glDisableVertexAttribArray(0);
+Application
+OpenGL framework
+OpenGL driver
+Graphics hardware
+OpenGL client
+OpenGL server
+Runs on CPU
+Runs on GPU
+OpenGL
+OpenGL - History
+7
+• 1992 – Originally released by Silicon Graphics Inc. (SGI) as a platform-independent 
+graphics API for professional 3D applications 
+• 2006 – Management transferred to the Khronos Group, a non-profit industry 
+consortium that also maintains Vulkan, WebGL, and OpenXR 
+• 2004 – OpenGL 2.0: Introduced the OpenGL Shading Language (GLSL), allowing 
+programmable vertex and fragment processing 
+• 2008 – OpenGL 3.0: Major revision; deprecated the fixed-function pipeline and 
+immediate mode (glBegin/glEnd) in favour of the programmable pipeline (using 
+shaders and buffer objects) 
+• 2017 – OpenGL 4.6: The last version released by Khronos 
+• Now: OpenGL is stable but no longer actively developed. Khronos and GPU vendors 
+continue to provide driver support, but new features and performance improvements 
+are being developed under Vulkan, which is intended as its successor
+OpenGL - Ressources
+8
+https://learnopengl.com/
+OpenGL Concepts
+• OpenGL Context:  
+• OpenGL operates within a context, the environment that links the application to the 
+GPU) 
+• OpenGL State:  
+• Current configuration controlling rendering behaviour.  
+• OpenGL functions modify or query this global state inside the active context.  
+• OpenGL State is stored in context 
+• OpenGL Object Model:  
+• Organizes GPU resources (buffers, textures, shaders)) 
+—> Open Context holds the state and objects that define how and what OpenGL renders.
+9
+OpenGL Context
+• Represents an instance of OpenGL 
+• Context stores all of the state associated with this instance of 
+OpenGL 
+• A process can have multiple contexts 
+• Each represent separate viewable surface (e.g. a window) 
+• Each has own OpenGL Objects 
+• Multiple contexts can share resources
+10
+
+=== VisualComputingL16Illumination (1).pdf pages=59
+Visual Computing I: 
+Interactive Computer Graphics and Vision
+Illumination Stefanie Zollmann and Tobias Langlotz 
+
+Recap Last Lecture
+2
+
+Vertex Shader
+3
+
+Vertex Shader
+4
+Camera
+camera.position 
+vec3(0,0,5)
+camera.lookat 
+vec3(0,0,0)
+
+Vertex Shader
+5
+Camera
+camera.position 
+vec3(0,0,5)
+camera.lookat 
+vec3(0,0,0)
+   //position
+ glm::vec3 position = m_camera->getPosition();
+ // Up vector
+ glm::vec3 up = glm::cross( right, direction );
+ // set camera's lookat
+ m_camera->setLookAt(position,position+direction,up ); 
+  //in camera class definition  
+  m_viewMatrix       = glm::lookAt(
+                                     m_position,           // Camera is here
+                                     m_lookat, // and looks here : at the same position, plus "direction"
+                                     m_up                  // Head is up (set to 0,-1,0 to look upside-down)
+                                     ); 
+//in shader class - passing to vertex shader 
+void Shader::updateMVP(glm::mat4 MVP){
+ glUniformMatrix4fv(m_MVPID, 1, GL_FALSE, &MVP[0][0]);
+}
+Example combining Shader.cpp and redTriangle.cpp
+Vertex Shader
+6
+#version 330 core 
+// Input vertex data, different for all executions of this shader. 
+layout(location = 0) in vec3 vertexPosition_modelspace; 
+// Values that stay constant for the whole mesh. 
+uniform mat4 MVP; 
+void main(){ 
+    gl_Position =  MVP * vec4(vertexPosition_modelspace,1); 
+}
+Simple vertex shader apply the model view project transformation:
+// Pass MVP to shader - in cpp file  
+glm::mat4 MVP; 
+GLint m_MVPID = glGetUniformLocation(programID, "MVP"); 
+glUniformMatrix4fv(m_MVPID, 1, GL_FALSE, &MVP[0][0]);  
+Example combining Shader.cpp and basicShader.vert
+Fragment Shader
+7
+#version 330 core 
+// Ouput data 
+out vec3 color; 
+uniform vec4 colorValue; 
+void main() 
+{ 
+ // Output color = red  
+ color = colorValue.rgb; 
+} 
+ // add color parameter to shader - cpp file 
+ GLint colorID = glGetUniformLocation(programID, "colorValue"); 
+ glm::vec4 color = glm::vec4(1.0,0.0,0.0,1.0); 
+ glProgramUniform4fv(programID,colorID,1, &color[0]);
+Example combining ColourShader.cpp and basicShader.frag
+basicShader.frag
+Simple Fragment Shader outputting gl_FragCoord:
+Fragment Shader
+8
+#version 330 core 
+// Ouput data 
+out vec3 color; 
+void main() 
+{ 
+ // Output color = screen coord 
+color =  vec3(gl_FragCoord.r/1024, 
+gl_FragCoord.g/768, 0.0); 
+} 
+Simple Fragment Shader outputting gl_FragCoord:
+https://registry.khronos.org/OpenGL-Refpages/gl4/html/gl_FragCoord.xhtml
+
+Datatypes GLSL
+9
+• Basic Types 
+• int, uint, float, bool: scalar numeric and logical types 
+• ivec2, ivec3, ivec4: integer vectors 
+• uvec2, uvec3, uvec4: unsigned integer vectors 
+• bvec2, bvec3, bvec4:  boolean vectors 
+• Floating-Point Vectors 
+• vec2, vec3, vec4:  2D/3D/4D float vectors 
+• Commonly used for positions, colors, and directions 
+• Matrices 
+• mat2, mat3, mat4:  2×2, 3×3, 4×4 float matrices 
+• Mixed forms also exist: mat2x3, mat3x4, etc. 
+• Used for transforms (model, view, projection)
+Datatypes GLSL
+10
+• Sampler and Image Types 
+• sampler2D, samplerCube, sampler2DShadow, etc. 
+• Represent textures bound to shader units 
+• Accessed via functions like texture() 
+• Special Types 
+• struct: custom user-defined types 
+• array: fixed-size arrays of any GLSL type 
+• in, out, uniform qualifiers specify data flow between stages 
+• Precision Qualifiers (ES / optional in desktop) 
+• highp, mediump, lowp:  control numeric precision
+
+=== VisualComputingL17TextureMapping.pdf pages=53
+Visual Computing I: 
+Interactive Computer Graphics and Vision
+Texture Mapping Stefanie Zollmann and Tobias Langlotz 
+
+Recap: Why Illumination?
+• Illumination is important for perception and 
+understanding of 3D scenes  
+• Has visual cues for humans 
+• Provides information about 
+• Positioning of light sources 
+• Characteristics of light sources 
+• Materials 
+• Viewpoint
+2
+
+Recap: Light Sources
+3
+Point Light Directional LightSpot Light 
+
+Recap: Reflection model
+4
+Ambient SpecularDiﬀuse
+ Combined
+Recap: Phong Reflection Model
+5
++ +
+Illumination = 
+Illumination =
+=
+Idiffuse = Idkd( ̂N ⋅ ̂L) Ispecular = Isks( ̂R ⋅ ̂V )nsIambient = Iaka
+Iaka + Idkd( ̂N ⋅ ̂L) + Isks( ̂R ⋅ ̂V )ns
+Recap: Shading Models
+6
+Flat Shading Phong ShadingGouraud Shading
+• Shading model determines on which shader stage and with which 
+quality lighting for triangles is calculated
+Global Illumination
+• Direct and indirect lighting 
+• Option in Unity: Real-time 
+Global Illumination 
+• Shadows  
+• Inter-object reflections 
+• Rendering equation 
+• Radiosity 
+7
+SIGGRAPH 2010 Course: “Global Illumination Across Industries
+
+Rendering Equation
+8
+Kajiya 1986
+
+Rendering Equation
+9
+Kajiya 1986
+https://commons.wikimedia.org/wiki/File:Rendering_eq.png
+Spectral radiance BRDFEmitted spectral radiance Spectral radiance of wavelength
+(λ) coming inward toward point x
+outgoing radiance 
+(what we see)
+incoming radiance 
+from direction
+emitted light (e.g., from a 
+lamp or emissive material)
+(bidirectional reﬂ ectance 
+distribution function)
+Physically Based Rendering (PBR)
+10
+• Approximation of Kajiya’s equation 
+• Render materials based on real-world light 
+behaviour, not ad-hoc artistic parameters. 
+• Core principles: 
+• Energy conservation:  
+• Light reflected ≤ light received 
+• Microfacet model -> surfaces have tiny 
+roughness details that shape 
+reflections 
+• Metallic–Roughness workflow -> 
+materials defined by metalness and 
+roughness, not specular color
+
+
+=== VisualComputingL19ShadowMapping.key.pdf pages=61
+Visual Computing I:  
+Interactive Computer Graphics and Vision
+Stencil Buffers, Render to Texture, Shadow Mapping Stefanie Zollmann and Tobias Langlotz 
+
+Recap
+Recap: Advanced Rendering with Buffers 
+Buffers
+4
+• Buffer is simply a contiguous block of memory 
+• Different types:  
+• Framebuffer: The conceptual container for all screen-
+related buffers 
+• Colour Buffer: Visible output, handled with double 
+buffering for smooth animation 
+• Depth Buffer: Essential for correct 3D spatial 
+relationships and occlusion 
+• Stencil Buffer: Mask for advanced rendering effects 
+• Data Buffers (Vertex Buffer Objects, Index Buffer 
+Objects): Efficiently store and transfer geometric and 
+uniform data to the GPU
+Frame Buffer
+5
+• Container: Framebuffer is a collection of images 
+(buffers) that hold the data for a single frame 
+• Goal: To render a complete 2D image from a 3D 
+scene 
+• Abstract Representation: Framebuffer is not directly 
+manipulated  
+• Can attach specific "renderbuffers" or textures to it 
+• Default Framebuffer: Provided by windowing system 
+that gets displayed on the screen
+Colour Buffer
+6
+• What it is:  
+• 2D array storing the final colour value (RGB 
+or RGBA) for each pixel 
+• Multiple Colour Attachments: You can have 
+multiple colour buffers for advanced 
+techniques (e.g., deferred shading) 
+• Double Buffering: Essential for smooth 
+animation: 
+• Front Buffer: Currently displayed on screen 
+• Back Buffer: Where the next frame is being 
+drawn. 
+• Buffer Swap: When drawing is complete, 
+the front and back buffers switch roles
+Z-Buffer fighting
+7
+• Visual artefact (Flickering) where two or more 
+surfaces with very similar depths "fight" for the 
+same fragment 
+• Why? 
+• Depth buffer does not have infinite precision 
+(grid of floating-point numbers representing 
+depth, e.g. 24-bit)  
+• When two fragments are extremely close, 
+their calculated depth values might be 
+(nearly) identical due to this limited precision 
+• GPU cannot decide which one is closer, so 
+the "winner" might be whichever fragment 
+happens to get processed last
+
+Alpha Testing
+8
+• Test discards a fragment if its 
+alpha is below a certain threshold 
+• Binary: the fragment is either fully 
+drawn or fully invisible 
+• Use Case: Fences, grass, leaves. 
+(Objects with hard cutouts) 
+• How: Done manually in the 
+Fragment Shader
+    // If the fragment's alpha is below the threshold... 
+    if (textureColor.a < alphaThreshold) 
+    { 
+        // ...discard the fragment completely. 
+        // It will not be written to the color buffer 
+        // OR the depth buffer. It simply ceases to exist. 
+        discard; 
+    } 
+Compositing
+9
+• Alpha describes the opacity of an object 
+• Fully opaque surface: α = 1 
+• 50% transparent surface: α = 0.5 
+• Fully transparent surface: α = 0
+Stencil Buffer
+

@@ -1,0 +1,138 @@
+Data Visualization Course: Guest Lecture Stefanie 
+Zollmann
+3D Visualisation Visualisation for 3D or 3D for Visualisation
+3D Visualisation - Why?
+3
+BAD!!!3D Visualisation - Why?
+4
+Still bad
+3D Visualisation Examples - Geographic Data
+5
+https://sandcastle.cesium.com/?id=cesium-world-terrain3D Visualisation Examples - Medical Datasets
+6
+3D Visualisation Examples - Photogrammetry
+7
+Why 3D Visualisation?
+8
+• Many scientific domains produce 
+3D datasets: 
+• Medicine (CT, MRI) 
+• Fluid dynamics, CFD 
+• Geoscience & atmospheric 
+models 
+• Photogrammetry 
+• Molecular structures 
+• 2D projections can obscure: 
+• Spatial correspondence 
+• Internal structures 
+• Occluded surfaces
+Why is 3D Visualization Challenging?
+9
+• Occlusion:  
+• 3D scenes naturally hide parts of the data from view 
+• Perspective distortion & depth ambiguity 
+• Users struggle to perceive depth accurately without additional cues 
+• Navigation complexity 
+• Manipulating a 3D viewpoint adds cognitive load 
+• High data sizes 
+• Volumetric data can become very large and requires optimised 
+rendering (GPU rendering) 
+• There is a need for specialised techniques rather than simply 
+extending 2D visualisations into 3DDepth Cues & Perception
+10
+• Shading (Phong, Blinn–Phong) 
+Essential for conveying shape on surfaces 
+• Shadowing & occlusion techniques 
+Improve depth perception and reveal structure 
+• Color coding, transparency, and transfer 
+functions -> Important in volume visualisation 
+• Cutting planes and slicing 
+Reduce clutter and reveal occluded internal 
+structures
+3D Visualisation
+11
+• 3D Visualization is the process of 
+transforming complex (sometimes 
+abstract) 3D data into an intuitive 
+graphical representation 
+• Goal: Gain insight ->  not just make 
+pretty pictures 
+• Why 3D? 
+• Intuitive Perception: Our brains are 
+built for 3D 
+• Spatial Relationships: Understand 
+"what's next to," "inside of," or 
+"behind" something else 
+• Data Density: We can encode more 
+information (x,y,z + color, size, opacity)
+(3D) Visualisation Pipeline
+12
+• 3D Example: 
+• Data (Raw Data): Raw CT scan - a huge file of numbers. 
+• Filtering (Data Prep): Smooth the data to reduce noise/Filter out irrelevant information (e.g. 
+air) 
+• Mapping ("Artistic" Step): Decide what the data looks like -> map data values to visual 
+properties 
+• Density values to colour 
+• Density values to opacity 
+• Specific density (like bone) to a surface (an isosurface) 
+• Rendering (Creating the Picture): Creates final 2D image (calculating lighting, shadows, 
+and perspective)
+https://infovis-wiki.net/wiki/Visualization_Pipeline3D visualisation is not always better
+13
+• Effective when spatial or volumetric relationships are critical 
+• Ineffective when projection or occlusion obscure structure 
+• Hybrid approaches (e.g., linked 2D–3D views) often 
+outperform pure 3D3D Data Types and Representations
+14
+Data type Representation Visualization techniques
+Scalar fields Volumetric grids (voxels) Volume rendering, isosurfaces
+Vector fields Flow data (velocity, wind) Streamlines, glyphs, particle tracing
+Geometric Data Meshes, point clouds Surface rendering, shading
+Multivariate spatial data Geometry + attributes Color mapping, texture, transparencyHow do 2D Concepts map to 3D Visualisation
+15
+Concept In 2D Visualization In 3D Visualization
+Data–space mapping (x, y) → pixel position (x, y, z) → voxel or vertex position
+Mark encoding Shape, color, size Geometry, material, illumination
+Projection Orthographic, map projection Perspective projection, camera transforms
+Interaction Pan, zoom, filter Orbit, flythrough, slicing, selection in depthImportant Fundamentals
+16
+• Camera model: viewpoint, field of view, projection type 
+• Lighting model: how shading conveys shape and depth 
+• Transparency and volume rendering: controlling visibility of 
+interior structures 
+• Interaction metaphors: orbit, slice, 3D selectionInteraction
+17
+• Basic Interaction: Zoom, Pan, Rotate: 
+• Needed because of occlusion: 3D objects may hide behind 
+other 3D objects 
+• Data Interaction: 
+• Slicing: "virtual knife" to cut open a 3D model 
+• Brushing: Selecting data in one view (e.g., a 3D scatter plot) 
+and seeing it highlight in another (a 2D histogram). 
+• Editing: Changing the Transfer Function Display
+18
+• Screen (Standard): “2D window into the 
+3D world” 
+• Virtual Reality (VR):  
+• Immersive: Users are inside data 
+• Used for complex data exploration, 
+simulations 
+• Augmented Reality (AR):  
+• Contextual 
+• Overlaying data onto real world 
+• Used in engineering, medicine, or 
+architecture
+Key Concept: Projection (Going from 3D to 2D)
+19
+• Perspective Projection 
+• Things farther away appear smaller 
+• Mimics how the human eye works 
+• Use:  
+• Games, movies, realistic visualisation 
+• Orthographic Projection 
+• Size does not change with distance 
+• Parallel lines remain parallel 
+• Use: Technical blueprints, CAD, engineering design (where 
+measurements are key)
+Perspective ProjectionRendering Techniques: Point clouds

@@ -1,0 +1,612 @@
+=== VisualComputing20ShadowMappingOptimisations.pdf pages=23
+Visual Computing I:  
+Interactive Computer Graphics and Vision
+Shadow Mapping Optimisations   Stefanie Zollmann and Tobias Langlotz 
+
+Shadow Mapping Challenges
+Shadow Map Aliasing
+Limitations
+• Field of View 
+• Surface Acne 
+• Aliasing 
+11
+Surface Acne
+Field of view
+Problem 1: Field of View
+• What if object is outside field of view 
+of shadow map? 
+• No shadows or partial shadows 
+• For spot lights, this can be changed 
+by tweaking its range 
+• Problem in particular for larger scenes 
+12
+
+• What happens?  
+• Sampling depth values 
+outside the light’s frustum 
+• Behaviour depends on texture 
+wrapping method, e.g. for 
+GL_CLAMP depends on the 
+last texel
+13
+Problem 1: Field of View
+Automatic Light Frustum for Shadow Mapping
+• Poorly chosen frustum can waste 
+resolution (too large) or cause missing 
+shadows (too small) 
+• Automating frustum computation ensures 
+optimal coverage of the visible scene 
+• Transform camera frustum corners 
+into light space 
+• Find the axis-aligned bounding box 
+(AABB) that encloses those points 
+• Use that AABB to build the light’s 
+orthographic projection matrix
+14
+// 1. Get 8 corners of camera view frustum in world space 
+std::vector<glm::vec3> frustumCorners = getFrustumCornersWS(camera); 
+// 2. Transform corners into light space 
+for (auto& v : frustumCorners) 
+    v = glm::vec3(lightViewMatrix * glm::vec4(v, 1.0)); 
+// 3. Compute light-space AABB 
+glm::vec3 min = vmin(frustumCorners); 
+glm::vec3 max = vmax(frustumCorners); 
+// 4. Build orthographic projection 
+glm::mat4 lightProj = glm::ortho(min.x, max.x, min.y, max.y, -max.z, -min.z); 
+// Final light matrix 
+glm::mat4 lightSpaceMatrix = lightProj * lightViewMatrix; 
+   
+Problem 2: Surface Acne
+• Self-shadowing problem due to precision and depth 
+map resolution 
+• Remember: we compare depth stored in the 
+shadow map (from the light’s view) and the 
+distance of the current fragment to the light 
+source 
+• If they are almost the same, small rounding errors 
+(from limited depth precision) can make the 
+fragment shader think the surface is slightly behind 
+itself, so it gets incorrectly marked as “in shadow” 
+• Looks like the lit surface has “shadow pimples” -> 
+surface acne
+15
+Surface Acne
+Light
+actual distance = 4.000
+(!dist>depthVal) ->not in shadow
+• Self-shadowing problem due to 
+precision and depth map resolution 
+• Depth value in map can differs 
+from actual distance between 
+object and light source 
+• Sampling problem: neighbouring 
+vertices map to the same depth 
+map pixel
+16
+Problem 2: Surface Acne
+value in depth map = 4.000
+Light
+actual distance = 4.0001
+value in depth map = 4.000
+dist>depthVal ->shadow
+• Self-shadowing problem due to 
+precision and depth map resolution 
+• Depth value in map can differs 
+from actual distance between 
+object and light source 
+• Sampling problem: neighbouring 
+vertices map to the same depth 
+map pixel
+17
+Problem 2: Surface Acne
+Shadow Map Bias
+• Solution for surface acne:  
+• Shadow map bias for shadow test: ShadowMap(x,y) + bias < dist 
+• Choosing a good bias value can be tricky - otherwise we get 
+shadow detachment -> “Peter Panning”
+18
+
+
+=== VisualComputing21Advanced.pdf pages=23
+Visual Computing I:  
+Interactive Computer Graphics and Vision
+Advanced Rendering Methods: Deferred Shading Stefanie Zollmann and Tobias Langlotz 
+
+Deferred Shading
+Forward Rendering
+3
+    // Loop through all 'X' lights 
+    for (int i = 0; i < actualLightCount; i++) 
+    { 
+        // Calculate common light vectors 
+        vec3 lightDir = normalize(lights[i].position - FragPos); 
+        vec3 viewDir  = normalize(viewPos - FragPos); 
+        vec3 normal   = normalize(Normal); 
+         
+        // --- Diffuse Lighting (Lambert) --- 
+        float diff = max(dot(normal, lightDir), 0.0); 
+        vec3 diffuse = diff * lights[i].color * lights[i].intensity; 
+        // --- Specular Lighting (Blinn-Phong) --- 
+        vec3 halfwayDir = normalize(lightDir + viewDir); 
+        float spec = pow(max(dot(normal, halfwayDir), 0.0), shininess); 
+        vec3 specular = spec * specularStrength *  
+    lights[i].color * lights[i].intensity; 
+         
+        // --- Combine --- 
+        finalColor += (diffuse * material) + specular; 
+    } 
+     
+    // Output the final, lit color 
+    FragColor = vec4(finalColor, 1.0); 
+Forward Rendering
+• So far, we did Forward Rendering 
+• "Classic" rendering pipeline 
+• Object-centric process: render one 
+object, then the next, then the next 
+• For every fragment (pixel) of an object, 
+the fragment shader: 
+• Fetches material properties (diffuse 
+colour, normals, etc.) 
+• Loops through all relevant lights in the 
+scene 
+• Calculates the final colour 
+• Final colour is written directly to the 
+main framebuffer
+4
+    // Loop through all 'X' lights 
+    for (int i = 0; i < actualLightCount; i++) 
+    { 
+        // Calculate common light vectors 
+        vec3 lightDir = normalize(lights[i].position - FragPos); 
+        vec3 viewDir  = normalize(viewPos - FragPos); 
+        vec3 normal   = normalize(Normal); 
+         
+        // --- Diffuse Lighting (Lambert) --- 
+        float diff = max(dot(normal, lightDir), 0.0); 
+        vec3 diffuse = diff * lights[i].color * lights[i].intensity; 
+        // --- Specular Lighting (Blinn-Phong) --- 
+        vec3 halfwayDir = normalize(lightDir + viewDir); 
+        float spec = pow(max(dot(normal, halfwayDir), 0.0), shininess); 
+        vec3 specular = spec * specularStrength *  
+    lights[i].color * lights[i].intensity; 
+         
+        // --- Combine --- 
+        finalColor += (diffuse * material) + specular; 
+    } 
+     
+    // Output the final, lit color 
+    FragColor = vec4(finalColor, 1.0); 
+Deferred Shading
+• Bottleneck of Forward 
+Rendering:  
+• The lighting cost scales 
+badly: O(Fragments×Lights)  
+• What if we want to have 1000 
+light sources? 
+• In addition: re-calculating 
+lighting for pixels that might be 
+hidden (overdrawn) later
+5
+    // Loop through all 'X' lights 
+    for (int i = 0; i < actualLightCount; i++) 
+    { 
+        // Calculate common light vectors 
+        vec3 lightDir = normalize(lights[i].position - FragPos); 
+        vec3 viewDir  = normalize(viewPos - FragPos); 
+        vec3 normal   = normalize(Normal); 
+         
+        // --- Diffuse Lighting (Lambert) --- 
+        float diff = max(dot(normal, lightDir), 0.0); 
+        vec3 diffuse = diff * lights[i].color * lights[i].intensity; 
+        // --- Specular Lighting (Blinn-Phong) --- 
+        vec3 halfwayDir = normalize(lightDir + viewDir); 
+        float spec = pow(max(dot(normal, halfwayDir), 0.0), shininess); 
+        vec3 specular = spec * specularStrength *  
+    lights[i].color * lights[i].intensity; 
+         
+        // --- Combine --- 
+        finalColor += (diffuse * material) + specular; 
+    } 
+     
+    // Output the final, lit color 
+    FragColor = vec4(finalColor, 1.0); 
+Deferred Shading
+• Could we decouple geometry from lighting? 
+• What if we first rendered all our geometry's data (Position, 
+Normal, Colour) for the whole screen... 
+• ...and then ran the lighting calculations once per pixel, using 
+that data? 
+-> Idea: Deferred Shading
+6
+Deferred Shading
+• "Defer" (delay) all the expensive lighting work until second 
+rendering pass 
+• Changes our pipeline: 
+• Pass 1 (Geometry Pass): Render all objects, but instead of 
+a final colour, we output their data (Position, Normal, 
+Colour) into a set of textures 
+• Pass 2 (Lighting Pass): Use those textures to compute all 
+the lighting at once -> Decoupling lighting complexity from 
+geometry complexity
+7
+Pass 1: Geometry Pass/G-Buffer
+• Geometry Pass does not render to 
+the screen:  
+• Renders to a set of textures called 
+the G-Buffer 
+• Use Multiple Render Targets (MRTs) 
+In OpenGL: glDrawBuffers 
+• What's in the G-Buffer? 
+• Position (World-space) 
+• Normals (World-space) 
+• Albedo (Diffuse Colour) 
+• Material Properties (e.g., Specular, 
+Roughness, Metallic)
+8
+Policarpo and Fonseca, “Deferred Shading Tutorial”, 2005 
+
+Pass2: Lighting Pass -> Using the G-Buffer
+• Second pass: 
+• Lighting is finally calculated 
+• How it works:  
+• Render a single quad that covers the entire screen 
+• Quad's fragment shader runs once for every pixel on the screen 
+• For each pixel, the shader: 
+• Gets its screen coordinate (gl_FragCoord). 
+• Uses that coordinate to sample all the G-Buffer textures (Position, 
+Normal, Albedo, etc.) 
+• Reconstructs all the data for the pixel that's visible at that spot 
+• Based on all the data, it performs the exact same lighting calculations as 
+our old forward shader (looping through all the lights)
+9
+Pros/Cons
+• Pros:  
+• Handles Large Light Counts: Cost is no longer tied to geometry - > render hundreds or 
+thousands of dynamic lights per frame 
+• Decoupled Performance: Lighting and geometry complexity are separate -> Complex scene 
+with many objects costs the same to light as a simple one (G-Pass is fast) 
+• Shader Simplicity: Geometry pass shader is simple (just outputs data), and lighting pass 
+shader is simple (just does lighting) 
+• Free Data for Post-Processing: The G-Buffer (positions, normals, etc.) can be reused to add 
+effects like SSAO (Screen-Space Ambient Occlusion), or screen-space reflections 
+• Cons 
+• Transparency is a Challenge: How do you store a semi-transparent material (like glass) in the 
+G-Buffer? Doesn't have one position or normal 
+• Solution: Hybrid approach:  
+• Render all opaque objects first with deferred shading 
+• Then render all transparent objects on top using traditional forward rendering 
+• High Memory Bandwidth: Writing and then reading 3-5 full-screen textures every single frame 10
+
+=== VisualComputing22WebGL.pdf pages=38
+Visual Computing I:  
+Interactive Computer Graphics and Vision
+WebGL Stefanie Zollmann and Tobias Langlotz 
+
+TODAY
+10
+FRAMEWORKS WEBXR
+WebGL
+WebGL 
+• Derivative of OpenGL 
+• More specifically, OpenGL ES version 2.0 
+• WebGL 2.0 is based on OpenGL ES 3.0 
+• Allows HTML pages to use WebGL to render using GPU resources  
+• Provides JavaScript bindings for OpenGL functions  
+• WebGL is under development by the Khronos Group 
+• Similar to modern OpenGL applications, all rendering is controlled by vertex 
+and fragment shaders 
+• Supports GLSL
+11
+WebGL 
+• Inside an HTML <canvas> element. 
+• Development is likely to involve HTML, CSS, 
+JavaScript, GLSL, in  
+addition to WebGL’s OpenGL-style naming.  
+ 
+12
+
+Support of WebGL 
+13
+http://caniuse.com/#feat=webgl
+
+WebGL Application Structure
+14
+Web page
+HTML Render 
+Engine
+Browser
+Web page using WebGL
+HTML
+ JavaScript
+HTML Render 
+Engine
+Browser
+GLSL ES
+WebGL
+HTML
+ JavaScript
+WebGL 
+15
+
+WebGL 
+16
+Example from WebGL Programming Guide: Interactive 3D Graphics Programming with WebGL by Matsuda and Lea
+WebGL “hello TRIANGLE”
+17
+<!DOCTYPE html> 
+<html lang="en"> 
+  <head> 
+    <meta charset="utf-8" /> 
+    <title>Hello Triangle</title> 
+  </head> 
+  <body onload="main()"> 
+    <canvas id="webgl" width="1200" height="1000"> 
+    Please use a browser that supports "canvas" 
+    </canvas> 
+    <script src="lib/webgl-utils.js"></script> 
+    <script src="lib/webgl-debug.js"></script> 
+    <script src="lib/cuon-utils.js"></script> 
+    <script src="HelloTriangle.js"></script> 
+  </body> 
+</html>
+Example from WebGL Programming Guide: Interactive 3D Graphics Programming with WebGL by Matsuda and Lea
+HTML: HELLOTRIANGLE.HTML
+
+WebGL “hello TRIANGLE”
+18
+function main() { 
+  // Retrieve <canvas> element 
+  var canvas = document.getElementById('webgl'); 
+  // Get the rendering context for WebGL 
+  var gl = getWebGLContext(canvas); 
+  if (!gl) { 
+    console.log('Failed to get the rendering context for WebGL’); return; 
+  } 
+  // Initialize shaders 
+  if (!initShaders(gl, VSHADER_SOURCE, FSHADER_SOURCE)) { 
+    console.log('Failed to intialize shaders.’); return; 
+  } 
+  // Write the positions of vertices to a vertex shader 
+  var n = initVertexBuffers(gl); 
+  if (n < 0) { 
+    console.log('Failed to set the positions of the vertices’); return; 
+  } 
+  // Specify the color for clearing <canvas> 
+  gl.clearColor(0, 0, 0, 1); 
+  // Clear <canvas> 
+  gl.clear(gl.COLOR_BUFFER_BIT); 
+  // Draw the rectangle 
+  gl.drawArrays(gl.TRIANGLES, 0, n); 
+} JAVASCRIPT: HELLOTRIANGLE.JS
+Example from WebGL Programming Guide: Interactive 3D Graphics Programming with WebGL by Matsuda and Lea
+
+=== VisualComputing23SceneGraphs.pdf pages=57
+Visual Computing I:  
+Interactive Computer Graphics and Vision
+Scenegraphs/Game Engines  Stefanie Zollmann and Tobias Langlotz 
+Root
+Group
+ Group
+Transform
+Geometry
+Geometry
+Geometry
+Material
+
+Recap
+WebGL 
+• Inside an HTML <canvas> element. 
+• Development is likely to involve HTML, CSS, 
+JavaScript, GLSL, in  
+addition to WebGL’s OpenGL-style naming.  
+ 
+4
+
+THREE.JS
+• First released April 2010 
+• 3D Javascript Library 
+• Under MIT license 
+• Uses WebGL for rendering (previously 
+also CanvasRenderer, SVGRenderer) 
+• Runs in all browsers that support WebGL 
+• Website: threejs.org 
+• Library is in single javascript file
+5
+
+Interactive: Object Picking
+• Raycaster computes the intersection of a ray and 
+a set of scene objects 
+• Raycaster used for mouse picking  
+• Given a mouse coordinate computes which 
+objects in the 3d space are hit 
+• Returns an array of intersected objects
+6
+var raycaster = new THREE.Raycaster();
+raycaster.setFromCamera( mouse, camera );
+var intersects = raycaster.intersectObjects( scene.children );
+Other webGL frameworks
+• Cesium 
+• Open-source WebGL 
+framework for rendering 
+globes and maps 
+• Focus on visualising dynamic 
+data 
+• Support of labels, billboards 
+• Sandbox
+7
+
+Other webGL frameworks
+• Babylon.js:  
+• JavaScript framework for 
+building 3D games with 
+HTML 5 and WebGL 
+• Focus on games 
+• Features like physics engine, 
+shadows, assets 
+management
+8
+https://www.babylonjs.com/Demos/Flat2009/
+WEBXR
+Supported devices 
+• ARCore-compatible devices 
+• Google Daydream 
+• HTC Vive 
+• Magic Leap One 
+• Microsoft Hololens 
+• Oculus Rift 
+• Samsung Gear VR 
+• Windows Mixed Reality headsets 
+• Apple Vision Pro (some adjustments needed)
+9
+https://immersive-web.github.io/webxr/
+https://github.com/immersive-web/webxr
+TODAY
+SCENE GRAPH
+10
+GAME ENGINES
+OPTIMISATIONS
+
+Why Scene Graphs?
+• OpenGL, WebGL  
+• Designed as a state machine 
+• Only aware of primitives (e.g. 
+triangles) 
+• No knowledge about complete 
+scene
+11
+
+
+=== VisualComputing24Raytracing.pdf pages=34
+Visual Computing I:  
+Interactive Computer Graphics and Vision
+Raytracing Stefanie Zollmann and Tobias Langlotz 
+
+Last time
+SCENEGRAPH
+2
+GAME ENGINES
+OPTIMISATIONS
+
+Today
+Raytracing/Rasterised
+3
+Raytracing Process
+ Intersections
+Motivation
+• Rasterisation provides high-performance 
+image synthesis but is limited to local 
+lighting models 
+• Global illumination phenomena (e.g., indirect 
+lighting, soft shadows, caustics) are difficult 
+to approximate in rasterisation pipelines 
+• Ray tracing approximates physical light 
+transport, enabling more accurate optical 
+effects
+4
+https://erichlof.github.io/THREE.js-PathTracing-Renderer/RayTracing_In_One_Weekend.html
+Fundamentals
+• Treat light propagation as geometric rays 
+• For each pixel, generate one or more 
+camera rays 
+• Determine the nearest surface 
+intersection for each ray 
+• Evaluate material response at the 
+intersection 
+• Emit secondary rays as required to 
+account for light interactions
+5
+
+Fundamentals
+6
+
+Raytracing vs Rasterised Graphics
+7
+Primitives
+Rays
+Ray Tracing GPU
+ Graphics Pipeline
+Primitives
+For each triangle
+For each pixel
+Does triangle cover pixel 
+Keep closest hit
+For each pixel
+For each triangle
+Does ray hit? 
+Keep closest hit
+
+A Simple Raytracer
+• Supports: 
+• Spotlights and Shadows 
+• Reflections 
+• Refraction
+8
+Lightsource
+Local Illumination Models
+• Compute outgoing radiance at an 
+intersection 
+• Classic models: 
+• Lambertian diffuse 
+• Phong / Blinn–Phong specular 
+components 
+• Requires shadow rays to determine 
+direct-light visibility
+9
+Lightsource
+Raytracing Process
+• Create an image plane and 
+viewpoint 
+• For each pixel trace a ‘ray’ from the 
+eye through a corresponding point 
+in the image plane 
+• For each ray, return the colour of 
+the object at the hit point (closest 
+to the camera)
+10
+Lightsource
+Pixel positions in image plane
+
+=== Visual Computing L25 Recap.pdf pages=14
+Visual Computing I:  
+Interactive Computer Graphics and Vision
+Recap Lecture Computer Graphics Stefanie Zollmann and Tobias Langlotz 
+
+Revision
+OpenGL Introduction
+
+Shader Programming
+
+Illumination
+
+Texture Mapping
+
+Advanced Rendering with Buffers
+
+Shadow Mapping
+
+Advanced Rendering: Deferred Shading
+
+WebGL/Three.JS
+WebGL •Inside an HTML <canvas> element. •Development is likely to involve HTML, CSS, JavaScript, GLSL, in  addition to WebGL’s OpenGL-style naming.   
+12
+WebGL Application Structure
+14
+Web page
+HTML Render EngineBrowser
+Web page using WebGL
+HTML
+JavaScript
+HTML Render EngineBrowser
+GLSL ES
+WebGL
+HTML
+JavaScript
+WebGL Shaders
+23
+var VSHADER_SOURCE =   'attribute vec4 a_Position;\n' +   'void main() {\n' +   '  gl_Position = a_Position;\n' +   '}\n'; // Fragment shader program var FSHADER_SOURCE =   'void main() {\n' +   '  gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);\n' +   '}\n'; JAVASCRIPT: HELLOTRIANGLE.JSExample from WebGL Programming Guide: Interactive 3D Graphics Programming with WebGL by Matsuda and Lea
+THREE.JS•First released April 2010 •3D Javascript Library •Under MIT license •Uses WebGL for rendering (previously also CanvasRenderer, SVGRenderer) •Runs in all browsers that support WebGL •Website: threejs.org •Library is in single javascript file26
+Interactive: Object Picking•Raycaster computes the intersection of a ray and a set of scene objects •Raycaster used for mouse picking  •Given a mouse coordinate computes which objects in the 3d space are hit •Returns an array of intersected objects36
+var raycaster = new THREE.Raycaster();raycaster.setFromCamera( mouse, camera );var intersects = raycaster.intersectObjects( scene.children );
+WEBXR•API is for accessing virtual reality (VR) and augmented reality (AR) devices on the Web •Includes sensors and head-mounted displays •Successor of WebVR API •Often used in combination with WebGL frameworks41
+https://immersive-web.github.io/webxr/https://github.com/immersive-web/webxr
+
